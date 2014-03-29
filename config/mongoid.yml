@@ -68,4 +68,4 @@ test:
 production:
   sessions:
     default:
-      uri: mongodb://<user>:12345678@oceanic.mongohq.com:10029/pocket-social_prod
+      uri: mongodb://admin:12345678@oceanic.mongohq.com:10029/pocket-social_prod
