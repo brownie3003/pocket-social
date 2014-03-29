@@ -10,3 +10,6 @@ p
 = link_to 'Edit', edit_user_path(@user)
 '|
 = link_to 'Back', users_path
+
+p
+  = button_to "Associate Pocket Account", "http://localhost:3000/requestpocket", css: "btn btn-primary"
