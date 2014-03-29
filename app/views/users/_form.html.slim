@@ -15,5 +15,8 @@
   .field
     = f.label :password
     = f.password_field :password
+  .field
+    = f.label :password_confirmation, "re-type password"
+    = f.password_field :password_confirmation
 
   .actions = f.submit 'Save'
