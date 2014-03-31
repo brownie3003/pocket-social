@@ -68,8 +68,8 @@ test:
 production:
   sessions:
     default:
-      #uri: mongodb://admin:12345678@oceanic.mongohq.com:10029/pocket-social_prod
-      uri: <%= ENV['MONGOHQ_URL'] %>  
+      uri: mongodb://admin:12345678@oceanic.mongohq.com:10029/pocket-social_prod
+      #uri: <%= ENV['MONGOHQ_URL'] %>  
   # Configure Mongoid specific options. (optional)
   options:
     # Includes the root model name in json serialization. (default: false)
