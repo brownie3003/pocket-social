@@ -1,40 +1,39 @@
 class PocketsController < ApplicationController
-  before_action :set_pocket, only: [:show, :edit, :update, :destroy]
-
-  # GET /pockets
-  # GET /pockets.json
-  def index
-    @pockets = Pocket.all
-  end
-
-  # GET /pockets/1
-  # GET /pockets/1.json
-  def show
-  end
-
-  # GET /pockets/new
+  before_action :set_pocket, only: [:update, :destroy]
+  # signed_in_user in Sessions_helper (made available to all controllers as included in Application Controller)
+  before_action :signed_in_user
+  
   def new
-    @pocket = Pocket.new
+    # Connect to Pocket and get username + token.
+    request_pocket
   end
-
-  # GET /pockets/1/edit
-  def edit
+  
+  def pocket_auth
+    puts session[:code]
   end
-
+    
   # POST /pockets
   # POST /pockets.json
   def create
-    @pocket = Pocket.new(pocket_params)
+    response = create_pocket
+    
+    puts response
 
-    respond_to do |format|
-      if @pocket.save
-        format.html { redirect_to @pocket, notice: 'Pocket was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @pocket }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @pocket.errors, status: :unprocessable_entity }
-      end
-    end
+    
+    puts "test #{response["access_token"]}, username: #{response["username"]}"
+    current_user.create_pocket(access_token: response["access_token"], username: response["username"])
+    
+    redirect_to current_user, notice: "Pocket was successfully associated"
+    # 
+    # respond_to do |format|
+    #   if @pocket.save
+    #     format.html { redirect_to current_user, notice: 'Pocket was successfully created.' }
+    #     format.json { render action: 'show', status: :created, location: current_user }
+    #   else
+    #     format.html { render action: 'new' }
+    #     format.json { render json: @pocket.errors, status: :unprocessable_entity }
+    #   end
+    # end
   end
 
   # PATCH/PUT /pockets/1

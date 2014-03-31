@@ -3,10 +3,6 @@ class UsersController < ApplicationController
     before_action :signed_in_user, only: [:edit, :update]
     before_action :correct_user, only: [:edit, :update]
     
-    POCKET_KEY = "25676-b707d7bb4007dc7bd76ea5b4"
-    
-    @code = ""
-    
     # GET /users
     # GET /users.json
     def index
@@ -95,13 +91,6 @@ class UsersController < ApplicationController
         # Never trust parameters from the scary internet, only allow the white list through.
         def user_params
             params.require(:user).permit(:username, :email, :password, :password_confirmation)
-        end
-        
-        def signed_in_user
-            unless signed_in?
-                store_location
-                redirect_to signin_url, notice: "Please sign in."
-            end
         end
         
         def correct_user
