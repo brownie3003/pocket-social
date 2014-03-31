@@ -1,0 +1,23 @@
+h1 Listing pockets
+
+table
+  thead
+    tr
+      th Username
+      th Token
+      th
+      th
+      th
+
+  tbody
+    - @pockets.each do |pocket|
+      tr
+        td = pocket.username
+        td = pocket.token
+        td = link_to 'Show', pocket
+        td = link_to 'Edit', edit_pocket_path(pocket)
+        td = link_to 'Destroy', pocket, data: {:confirm => 'Are you sure?'}, :method => :delete
+
+br
+
+= link_to 'New Pocket', new_pocket_path

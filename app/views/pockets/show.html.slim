@@ -1,0 +1,12 @@
+p#notice = notice
+
+p
+  strong Username:
+  = @pocket.username
+p
+  strong Token:
+  = @pocket.token
+
+= link_to 'Edit', edit_pocket_path(@pocket)
+'|
+= link_to 'Back', pockets_path

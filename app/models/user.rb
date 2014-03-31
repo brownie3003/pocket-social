@@ -22,6 +22,8 @@ class User
   VALID_EMAIL_REGEX = /\A[\w+\-.]+@[a-z\d\-.]+\.[a-z]+\z/i
   validates_format_of :email , with: VALID_EMAIL_REGEX
   
+  embeds_one :pocket
+  
   # Should probably add a salt if ever going to production
   def User.new_remember_token
     SecureRandom.urlsafe_base64

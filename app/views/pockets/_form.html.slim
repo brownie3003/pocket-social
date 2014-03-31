@@ -1,0 +1,15 @@
+= form_for @pocket do |f|
+  - if @pocket.errors.any?
+    #error_explanation
+      h2 = "#{pluralize(@pocket.errors.count, "error")} prohibited this pocket from being saved:"
+      ul
+        - @pocket.errors.full_messages.each do |message|
+          li = message
+
+  .field
+    = f.label :username
+    = f.text_field :username
+  .field
+    = f.label :token
+    = f.text_field :token
+  .actions = f.submit 'Save'

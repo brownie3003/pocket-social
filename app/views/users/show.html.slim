@@ -11,5 +11,9 @@ p
 '|
 = link_to 'Back', users_path
 
-p
-  = button_to "Associate Pocket Account", "http://localhost:3000/requestpocket", css: "btn btn-primary"
+- if @user.pocket.nil?
+    p = button_to "Associate Pocket Account", "http://localhost:3000/requestpocket", css: "btn btn-primary"
+- else
+    h3 Pocket account
+    p = @user.pocket.username
+    p = @user.pocket.token
