@@ -24,10 +24,17 @@
                             a href=""
             ul.nav.navbar-nav.navbar-right
                 - if signed_in?
-                    li
-                        = link_to "Profile", current_user
-                    li
-                        = link_to "Log out", signout_path, method: "delete"
+                    li.dropdown 
+                        a data-toggle="dropdown" href="#"
+                            | Account
+                            span.caret
+                        ul.dropdown-menu
+                            li
+                                = link_to "Profile", current_user
+                            li
+                                = link_to "Settings", edit_user_path(current_user)
+                            li
+                                = link_to "Log out", signout_path, method: "delete"
                 - else
                     li
                         = link_to "Log in", signin_path
