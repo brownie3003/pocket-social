@@ -1,5 +1,7 @@
 p#notice = notice
 
+= render 'subscribe_form' if signed_in? && @user != current_user
+
 p
   strong Username:
   = @user.username

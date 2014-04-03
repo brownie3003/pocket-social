@@ -22,6 +22,21 @@ class User
   
   embeds_one :pocket
   
+  
+  has_and_belongs_to_many :subscriptions, class_name: 'User', inverse_of: :subscribers, autosave: true
+  has_and_belongs_to_many :subscribers, class_name: 'User', inverse_of: :subscriptions
+  
+  def subscribe!(user)
+    if self.id != user.id && !self.subscriptions.include?(user)
+      self.subscriptions << user
+      user.subscribers << self
+    end
+  end
+
+  def unsubscribe!(user)
+    self.subscriptions.delete(user)
+  end
+  
   # Should probably add a salt if ever going to production
   def User.new_remember_token
     SecureRandom.urlsafe_base64

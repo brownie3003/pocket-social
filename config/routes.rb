@@ -2,7 +2,6 @@ PocketSocial::Application.routes.draw do
 
   resources :users
   resources :pockets, only: [:new, :create, :destroy]
-  resources :subscriptions, only: [:create, :destroy]
   resources :sessions, only: [:new, :create, :destroy]
 
   match '/signup',  to: 'users#new',            via: 'get'
@@ -10,6 +9,7 @@ PocketSocial::Application.routes.draw do
   match '/signout', to: 'sessions#destroy',     via: 'delete'
   
   match '/pocket_auth', to: 'pockets#pocket_auth',   via: 'get'
+  match '/subscribe', to: 'users#subscribe', via: 'patch'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
