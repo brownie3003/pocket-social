@@ -1,6 +1,12 @@
 p#notice = notice
 
-= render 'subscribe_form' if signed_in? && @user != current_user
+- unless current_user == @user
+    - if @user.pocket == nil
+        p Sorry this user has not associated their pocket account yet so you can't subscribe to them.
+    - elsif !current_user.subscriptions.include? @user and signed_in?
+        = render 'subscribe_form'
+    - else
+        = render 'unsubscribe_form'
 
 p
   strong Username:
@@ -9,13 +15,18 @@ p
   strong Email:
   = @user.email
 
-= link_to 'Edit', edit_user_path(@user)
-'|
-= link_to 'Back', users_path
+/ = link_to 'Edit', edit_user_path(@user)
+/ '|
+/ = link_to 'Back', users_path
 
-- if @user.pocket.nil?
-    p = button_to "Associate Pocket Account", new_pocket_path , css: "btn btn-primary", method: 'get'
-- else
-    h3 Pocket account
-    p = @user.pocket.username
-    p = @user.pocket.access_token
+-if signed_in?
+    - if current_user == @user
+        - if @user.pocket.nil?
+            p = button_to "Associate Pocket Account", new_pocket_path , css: "btn btn-primary", method: 'get'
+        - else
+            h3 Pocket account
+            p = @user.pocket.username
+            p = @user.pocket.access_token
+    - elsif current_user.subscriptions.include? @user and !@user.pocket.nil?
+        h2 Pocket Articles
+        = user_articles

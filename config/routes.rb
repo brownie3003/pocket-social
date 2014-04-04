@@ -10,6 +10,7 @@ PocketSocial::Application.routes.draw do
   
   match '/pocket_auth', to: 'pockets#pocket_auth',   via: 'get'
   match '/subscribe', to: 'users#subscribe', via: 'patch'
+  match '/unsubscribe', to: 'users#unsubscribe', via: 'patch'
 
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".

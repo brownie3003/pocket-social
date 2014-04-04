@@ -25,11 +25,6 @@ class UsersController < ApplicationController
         # @user = User.find(params[:id])
     end
     
-    def subscribe
-        current_user.subscribe!(User.find(params[:subscribe_to_user]))
-        redirect_to current_user
-    end
-    
     # POST /users
     # POST /users.json
     def create
@@ -85,6 +80,16 @@ class UsersController < ApplicationController
         
         puts response
         # Save result to the database record
+    end
+    
+    def subscribe
+        current_user.subscribe!(User.find(params[:subscribe_to_user]))
+        redirect_to User.find(params[:subscribe_to_user])
+    end
+    
+    def unsubscribe
+        current_user.unsubscribe!(User.find(params[:unsubscribe_to_user]))
+        redirect_to User.find(params[:unsubscribe_to_user])
     end
 
     private
