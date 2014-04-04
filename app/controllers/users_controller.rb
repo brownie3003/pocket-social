@@ -66,22 +66,6 @@ class UsersController < ApplicationController
         end
     end
     
-    def request_pocket
-        code = HTTParty.post("https://getpocket.com/v3/oauth/request", { headers: POCKET_HEADERS, body: { consumer_key: POCKET_KEY, redirect_uri: "www.test.com"}.to_json })["code"]
-        
-        # puts "Got this code from Pocket #{code}, now redirecting to pocket auth"
-        redirect_to "https://getpocket.com/auth/authorize?request_token=#{code}&redirect_uri=http://localhost:3000/addpocket"
-    end    
-        
-    def add_pocket
-        puts "Sending response with #code}"
-        # Send authorised code to get username and access_token
-        response = HTTParty.post("https://getpocket.com/v3/oauth/authorize",{ headers: POCKET_HEADERS, body: { consumer_key: POCKET_KEY, code: code}.to_json })
-        
-        puts response
-        # Save result to the database record
-    end
-    
     def subscribe
         current_user.subscribe!(User.find(params[:subscribe_to_user]))
         redirect_to User.find(params[:subscribe_to_user])
