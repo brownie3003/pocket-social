@@ -1,6 +1,4 @@
 module PocketsHelper
-    POCKET_KEY = "25676-b707d7bb4007dc7bd76ea5b4"
-    POCKET_HEADERS = { "Content-Type" => "application/json", "X-Accept" => "application/json" }
     
     def request_pocket
         session[:code] = HTTParty.post("https://getpocket.com/v3/oauth/request", { headers: POCKET_HEADERS, body: { consumer_key: POCKET_KEY, redirect_uri: "www.test.com"}.to_json })["code"]

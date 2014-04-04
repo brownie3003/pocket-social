@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
-    before_action :signed_in_user, only: [:edit, :update]
+    before_action :signed_in_user, only: [:edit, :update, :index]
     before_action :correct_user, only: [:edit, :update]
     
     # GET /users
@@ -67,7 +67,7 @@ class UsersController < ApplicationController
     end
     
     def request_pocket
-        code = HTTParty.post("https://getpocket.com/v3/oauth/request", { headers: { "Content-Type" => "application/json", "X-Accept" => "application/json"}, body: { consumer_key: POCKET_KEY, redirect_uri: "www.test.com"}.to_json })["code"]
+        code = HTTParty.post("https://getpocket.com/v3/oauth/request", { headers: POCKET_HEADERS, body: { consumer_key: POCKET_KEY, redirect_uri: "www.test.com"}.to_json })["code"]
         
         # puts "Got this code from Pocket #{code}, now redirecting to pocket auth"
         redirect_to "https://getpocket.com/auth/authorize?request_token=#{code}&redirect_uri=http://localhost:3000/addpocket"
@@ -76,7 +76,7 @@ class UsersController < ApplicationController
     def add_pocket
         puts "Sending response with #code}"
         # Send authorised code to get username and access_token
-        response = HTTParty.post("https://getpocket.com/v3/oauth/authorize",{ headers: { "Content-Type" => "application/json", "X-Accept" => "application/json"}, body: { consumer_key: POCKET_KEY, code: code}.to_json })
+        response = HTTParty.post("https://getpocket.com/v3/oauth/authorize",{ headers: POCKET_HEADERS, body: { consumer_key: POCKET_KEY, code: code}.to_json })
         
         puts response
         # Save result to the database record

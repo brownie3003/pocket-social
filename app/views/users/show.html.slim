@@ -29,4 +29,20 @@ p
             p = @user.pocket.access_token
     - elsif current_user.subscriptions.include? @user and !@user.pocket.nil?
         h2 Pocket Articles
-        = user_articles
+        - @articles_hash = user_articles
+        ul
+            - @articles_hash["list"].each do |id, article|
+                li
+                    = link_to "#{article["resolved_title"]}", article["resolved_url"]
+
+-if signed_in?
+    - if current_user == @user 
+        h3 Article Feed
+        p This will be a list of all the articles that people you are subscribed to are reading... Until I get around to doing that you can see what people you've subscribed to are reading by checking out their profile page.
+
+h3 Subscriptions
+span List of subscriptions
+ul
+    - @user.subscriptions.each do |subscription|
+        li
+            = link_to "#{subscription["id"]}", user_path(subscription["id"])
