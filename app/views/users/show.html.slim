@@ -26,7 +26,6 @@ p
         - else
             h3 Pocket account
             p = @user.pocket.username
-            p = @user.pocket.access_token
     - elsif current_user.subscriptions.include? @user and !@user.pocket.nil?
         h2 Pocket Articles
         - @articles_hash = user_articles
