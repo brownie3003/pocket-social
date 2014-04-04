@@ -41,7 +41,10 @@ p
         p This will be a list of all the articles that people you are subscribed to are reading... Until I get around to doing that you can see what people you've subscribed to are reading by checking out their profile page.
 
 h3 Subscriptions
-span List of subscriptions
+- if @user.subscriptions.empty?
+    p 
+        | Ut-oh you don't have any subscriptions. Go and find some awesome people to subscribe to and find out what they're reading: 
+        = link_to "User list", users_path
 ul
     - @user.subscriptions.each do |subscription|
         li
