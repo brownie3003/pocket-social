@@ -12,6 +12,17 @@ class UsersController < ApplicationController
     # GET /users/1
     # GET /users/1.json
     def show
+        if !@user.pocket.nil?
+            @user_articles = user_articles(@user)["list"]
+        end
+        
+        if !current_user.pocket.nil?
+            current_user_article = user_articles(current_user)["list"]
+            @current_user_urls = Array.new
+            current_user_article.each do |id, article|
+                @current_user_urls << article["resolved_url"]
+            end
+        end
     end
     
     # GET /users/new
@@ -74,6 +85,11 @@ class UsersController < ApplicationController
     def unsubscribe
         current_user.unsubscribe!(User.find(params[:unsubscribe_to_user]))
         redirect_to User.find(params[:unsubscribe_to_user])
+    end
+    
+    def add_article
+        add_article_helper params[:article], current_user.pocket.access_token
+        redirect_to User.find(params[:user])
     end
 
     private

@@ -13,7 +13,5 @@ module PocketsHelper
     
     def create_pocket
         HTTParty.post("https://getpocket.com/v3/oauth/authorize",{ headers: POCKET_HEADERS, body: { consumer_key: POCKET_KEY, code: session[:code]}.to_json })
-        
-        # puts response
     end
 end

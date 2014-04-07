@@ -27,24 +27,37 @@ p
             h3 Pocket account
             p = @user.pocket.username
     - elsif current_user.subscriptions.include? @user and !@user.pocket.nil?
-        h2 Pocket Articles
-        - @articles_hash = user_articles
-        ul
-            - @articles_hash["list"].each do |id, article|
-                li
+        h2 style="text-align: center;" Pocket Articles
+        
+        
+        - @user_articles.each do |id, article|
+            .row.pocket_row
+                .col-xs-1
+                .col-xs-8
                     = link_to "#{article["resolved_title"]}", article["resolved_url"]
-
+                    p = article["excerpt"]
+                - if !current_user.pocket.nil?
+                    .col-xs-2
+                        - if @current_user_urls.include? article["resolved_url"]
+                            p Already in your pocket
+                        - else
+                            = form_for current_user, :url => {action: 'add_article'} do |f|
+                                = hidden_field_tag :user, @user.id
+                                = hidden_field_tag :article, article["resolved_url"]
+                                = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
+            hr
 -if signed_in?
     - if current_user == @user 
         h3 Article Feed
         p This will be a list of all the articles that people you are subscribed to are reading... Until I get around to doing that you can see what people you've subscribed to are reading by checking out their profile page.
 
-h3 Subscriptions
-- if @user.subscriptions.empty?
-    p 
-        | Ut-oh you don't have any subscriptions. Go and find some awesome people to subscribe to and find out what they're reading: 
-        = link_to "User list", users_path
-ul
-    - @user.subscriptions.each do |subscription|
-        li
-            = link_to "#{subscription["id"]}", user_path(subscription["id"])
+- if current_user == @user
+    h3 Subscriptions
+    - if @user.subscriptions.empty?
+        p 
+            | Ut-oh you don't have any subscriptions. Go and find some awesome people to subscribe to and find out what they're reading: 
+            = link_to "User list", users_path
+    ul
+        - @user.subscriptions.each do |subscription|
+            li
+                = link_to "#{subscription["id"]}", user_path(subscription["id"])
