@@ -3,6 +3,12 @@ p#notice = notice
 - unless current_user == @user
     - if @user.pocket == nil
         p Sorry this user has not associated their pocket account yet so you can't subscribe to them.
+    - elsif current_user.pocket.nil?
+        h3 You need to connect your pocket before you can see what other people have in their pocket.
+        p = button_to "Associate Pocket Account", new_pocket_path , css: "btn btn-primary", method: 'get'
+        p 
+            | Or if you don't have a pocket account yet, sign up here: 
+            = link_to "Pocket.com", "http://www.getpocket.com"
     - elsif !current_user.subscriptions.include? @user and signed_in?
         = render 'subscribe_form'
     - else
