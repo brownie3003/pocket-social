@@ -5,4 +5,12 @@ class ApplicationController < ActionController::Base
   include SessionsHelper 
   include PocketsHelper
   include UsersHelper
+  
+  def default_url_options
+    if Rails.env.production?
+      {:host => "myproduction.com"}
+    else  
+      {}
+    end
+  end
 end
