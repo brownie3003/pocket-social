@@ -35,7 +35,11 @@ class UserMailer < ActionMailer::Base
             
         else
             
-            user_articles = user_articles(@user, "all")
+            if user.pocket.nil?
+                user_articles = []
+            else
+                user_articles = user_articles(@user, "all")
+            end
             
             subscription_articles = get_subscription_articles(@user)
             
