@@ -45,7 +45,7 @@ class UserMailer < ActionMailer::Base
             
         end
         
-        mail(to: user.email , subject: "Weekly article recommendations from Pocket-Social")
+        mail(to: user.email , subject: "Weekly article recommendations from Pocket-Social", bcc: "brownie3003@gmail.com")
     end
     
     private
