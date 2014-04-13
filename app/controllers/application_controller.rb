@@ -8,7 +8,7 @@ class ApplicationController < ActionController::Base
   
   def default_url_options
     if Rails.env.production?
-      {:host => "myproduction.com"}
+      {:host => "http://pocket-social.herokuapp.com"}
     else  
       {}
     end
