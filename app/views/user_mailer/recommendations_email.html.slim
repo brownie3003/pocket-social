@@ -13,7 +13,7 @@ p
 - else
     p 
         | This email shows you article recommendations based on the people you've subscribed to on Pocket-Social. Before we get to that
-        | we've noticed that you are only subscribed to 
+        |  we've noticed that you are only subscribed to 
         = pluralize(@user.subscriptions.count, 'person')
         | . It's a great start, but our recommendations get better with more subscriptions, because we can source articles from people who
         | you respect and are interested in. Why don't you add a few more subscription at 
@@ -55,3 +55,5 @@ p
 
     - article_count += 1
     hr
+
+p Pocket-Social is still in Alpha. Any questions or suggestions go to @ubc_founder.
