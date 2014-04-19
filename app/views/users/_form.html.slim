@@ -1,22 +1,19 @@
-= form_for @user, html: {class: "pocket-social-form" } do |f|
-  - if @user.errors.any?
-    #error_explanation
-      h2 = "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
-      ul
-        - @user.errors.full_messages.each do |message|
-          li = message
+.form-wrapper
+    = form_for @user, html: {class: "pocket-social-form" } do |f|
+        - if @user.errors.any?
+            #error_explanation
+                h2 = "#{pluralize(@user.errors.count, "error")} prohibited this user from being saved:"
+                ul
+                - @user.errors.full_messages.each do |message|
+                    li = message
 
-  .field
-    = f.label :username
-    = f.text_field :username
-  .field
-    = f.label :email
-    = f.text_field :email
-  .field
-    = f.label :password
-    = f.password_field :password
-  .field
-    = f.label :password_confirmation, "re-type password"
-    = f.password_field :password_confirmation
+        .field
+            = f.text_field :username, placeholder: "Username"
+        .field
+            = f.text_field :email, placeholder: "Email"
+        .field
+            = f.password_field :password, placeholder: "Password"
+        .field
+            = f.password_field :password_confirmation, placeholder: "Re-type password"
 
-  .actions = f.submit 'Save'
+        .actions = f.submit 'Save'

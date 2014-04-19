@@ -1,14 +1,13 @@
-= form_for(:session, url: sessions_path) do |f|
-  .field
-    = f.label :email
-    = f.text_field :email
-  .field
-    = f.label :password
-    = f.password_field :password
+.form-wrapper
+    = form_for :session, url: sessions_path, html: { class: "pocket-social-form"} do |f|
+      .field
+        = f.text_field :email, placeholder: "Email"
+      .field
+        = f.password_field :password, placeholder: "Password"
 
-  .actions = f.submit 'Sign-in'
+      .actions = f.submit 'Sign-in'
 
-p
+p style="text-align: center;"
     | New user? 
     = link_to "Sign up now!", signup_path
  
