@@ -2,33 +2,41 @@ p
     | Dear 
     = @user.id
 
+p    
+    | Happy Easter! Here are your article recommendations from Pocket-Social.
+
+p
+    | You can see all the articles a user is reading at 
+    = link_to "Pocket-Social.com", "pocket-social.herokuapp.com" 
+    |  and find more people to subscribe to so their articles contribute to your recommendations each week.
+
 - if @user.subscriptions.empty?
     p 
-        | You don't have subscriptions on Pocket-Social. Pocket-Social works by sourcing recommendations based on what your network is actually reading.
+        | You don't have subscriptions on Pocket-Social. Pocket-Social works by sourcing recommendations based on what your network is reading.
         | Try subscribing to other users so we can generate recommendations for you.
     p
         = link_to "Pocket-Social Users List", users_url
     p For now we've sourced some recommendations by finding the most popular articles among our readers.
 
-- else
-    p 
-        | This email shows you article recommendations based on the people you've subscribed to on Pocket-Social. Before we get to that
-        |  we've noticed that you are only subscribed to 
-        = pluralize(@user.subscriptions.count, 'person')
-        | . It's a great start, but our recommendations get better with more subscriptions, because we can source articles from people who
-        | you respect and are interested in. Why don't you add a few more subscription at 
-        = link_to "Pocket-Social", users_url
-        | .
-    p
-        | You can also invite friends to join Pocket-Social.
-
-
 // We don't want to give more than 10 article recommendations
 - article_count = 0
+
+// We don't want to give more than 3 articles from a specific user
+- user_article_count = Hash.new
 
 - @recommendation_array.each do |article|
     
     - if article_count == 10 then break end
+
+    - if article[:being_read_by].count == 1
+        - article_reader = article[:being_read_by][0]
+        - if user_article_count.include? article_reader
+            - if user_article_count[article_reader] == 3
+                - next
+            - else
+                - user_article_count[article_reader] += 1
+        - else
+            - user_article_count[article_reader] = 1
 
     .row
         .col-xs-2
@@ -39,7 +47,7 @@ p
             - if article[:being_read_by].count == 1
                 p 
                     | Being read by 
-                    = article[:being_read_by][0]
+                    = link_to article[:being_read_by][0], user_url(User.find_by(id: article[:being_read_by][0]))
             - else
                 p
                     | Being read by 
@@ -48,7 +56,7 @@ p
                     = article[:being_read_by].join(", ")
                     | )
         / .col-xs-2
-        /     = form_for @user, :url => {action: 'add_article'} do |f|
+        /     = form_for @user, :url => {controller: 'users', host: "localhost:3000", action: 'add_article'} do |f|
         /         = hidden_field_tag :user, @user.id
         /         = hidden_field_tag :article, article["resolved_url"]
         /         = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
@@ -56,4 +64,7 @@ p
     - article_count += 1
     hr
 
-p Pocket-Social is still in Alpha. Any questions or suggestions go to @ubc_founder.
+p 
+    | Pocket-Social is still in Alpha. Any questions or suggestions go to 
+    = link_to "@ubc_founder", "www.twitter.com/UBC_founder"
+    |.

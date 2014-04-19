@@ -1,4 +1,5 @@
 class UserMailer < ActionMailer::Base
+    helper MailerHelper
     add_template_helper(UsersHelper)
     default from: "team@pocket-social.com"
     
@@ -13,17 +14,29 @@ class UserMailer < ActionMailer::Base
             User.each do |user|
                 
                 if user.pocket.nil?
+                    # If the user has no 
                     next
                 else
                     user_articles(User.find_by(id: user.id), "all", (Time.now - 2.weeks)).each do |id, article|
                         
-                        if @recommendation_array.select{|element| element[:url] == article["resolved_url"]}.empty?
+                        if article["resolved_url"].include? "ifttt"
+                            next
+                        elsif @recommendation_array.select{|element| element[:url] == article["resolved_url"]}.empty?
+                            
                             # We need to push this article into our array with certain paramaters.
-                            @recommendation_array << {url: article["resolved_url"], title: article["resolved_title"], excerpt: article["excerpt"], being_read_by: [user[:id]]}
+                            @recommendation_array << {
+                                url: article["resolved_url"], 
+                                title: article["resolved_title"], 
+                                excerpt: article["excerpt"], 
+                                being_read_by: [user[:id]]
+                            }
+                        
                         # In the case where we do find a match, i.e the above is true
                         else
+                            
                             # Get the index of the element where the url matches the article url
                             index = @recommendation_array.index{|element| element[:url] == article["resolved_url"]}
+                            
                             # Append the subscription user to the :being_read_by key of the hash
                             @recommendation_array[index][:being_read_by] << user[:id]
                         end        
@@ -52,25 +65,45 @@ class UserMailer < ActionMailer::Base
         mail(to: user.email , subject: "Weekly article recommendations from Pocket-Social", bcc: "brownie3003@gmail.com")
     end
     
+    def add_article_from_email article, user    
+        add_article_helper article, user.pocket.access_token
+        redirect_to User.find_by(id: user.id)
+    end
+    
     private
+    
+        # Method that gets all articles that are available from subscriptions
         def get_subscription_articles user
-            # Method that gets all articles that are available from subscriptions
             
             # Create an array to put each article in
             subscription_articles = Array.new
             
             # Loop over each subcription object
             user.subscriptions.each do |subscription|
+                
                 # Loop over each article from the subscription user in this loop
                 user_articles(User.find_by(id: subscription[:id]), "all", (Time.now - 2.weeks)).each do |id, article|
+                    
+                    # Matt Clifford uses IFTT which regularly doesn't get an article.
+                    if article["resolved_url"].include? "ifttt"
+                        next
                     # If we can not find an element that has a url key with the same value as the articles url 
-                    if subscription_articles.select{|element| element[:url] == article["resolved_url"]}.empty?
+                    elsif subscription_articles.select{|element| element[:url] == article["resolved_url"]}.empty?
+                        
                         # We need to push this article into our array with certain paramaters.
-                        subscription_articles << {url: article["resolved_url"], title: article["resolved_title"], excerpt: article["excerpt"], being_read_by: [subscription[:id]]}
+                        subscription_articles << {
+                            url: article["resolved_url"], 
+                            title: article["resolved_title"], 
+                            excerpt: article["excerpt"], 
+                            being_read_by: [subscription[:id]]
+                        }
+                    
                     # In the case where we do find a match, i.e the above is true
                     else
+                        
                         # Get the index of the element where the url matches the article url
                         index = subscription_articles.index{|element| element[:url] == article["resolved_url"]}
+                        
                         # Append the subscription user to the :being_read_by key of the hash
                         subscription_articles[index][:being_read_by] << subscription[:id]
                     end
@@ -81,6 +114,7 @@ class UserMailer < ActionMailer::Base
         end
         
         def find_recommendation_articles (user_articles, subscription_articles)
+            
             # loop over subscription articles and check whether it is in user_articles (by resolved URL) if it is remove from subscription_articles
             user_articles_urls = Array.new
             
