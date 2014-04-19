@@ -56,3 +56,5 @@ gem 'bootstrap-sass', '3.1.1.0'
 gem 'rails_12factor', group: :production
 
 gem 'pry-rails', :group => :development
+
+gem 'will_paginate_mongoid', '2.0.1'

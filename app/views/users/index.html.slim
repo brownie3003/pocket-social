@@ -1,25 +1,21 @@
 h1 Users
 p I should probaby put a search thing on this....
 
-table
-  thead
-    tr
-      th Username
-      th Email
-      th
-      th
-      th
+table.table.table-hover
+    thead
+        tr
+            th Pocket Username 
+            th Email Address
+            th
+    tbody
+        - @users.each do |user|
+            - unless user == current_user
+                tr
+                    td = user.username
+                    td = user.email
+                    td
+                        = link_to "View", user, class: "btn btn-primary"
 
-  tbody
-    - @users.each do |user|
-      tr
-        td = user.username
-        td = user.email
-        td = link_to 'Show', user
 
-        / td = link_to 'Edit', edit_user_path(user)
-        / td = link_to 'Destroy', user, data: {:confirm => 'Are you sure?'}, :method => :delete
-
-br
-
+= will_paginate @users 
 / = link_to 'New User', new_user_path
