@@ -1,5 +1,4 @@
 class UserMailer < ActionMailer::Base
-    helper MailerHelper
     add_template_helper(UsersHelper)
     default from: "team@pocket-social.com"
     
