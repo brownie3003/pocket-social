@@ -71,7 +71,7 @@ class UserMailer < ActionMailer::Base
             # Loop over each subcription object
             user.subscriptions.each do |user|
                 
-                create_articles_array articles_array, user
+                create_articles_array subscription_articles, user
                 
             end
             
@@ -94,7 +94,7 @@ class UserMailer < ActionMailer::Base
                         url: article["resolved_url"], 
                         title: article["resolved_title"], 
                         excerpt: article["excerpt"], 
-                        being_read_by: [subscription[:id]]
+                        being_read_by: [user[:id]]
                     }
                 
                 # In the case where we do find a match, i.e the above is true
@@ -112,7 +112,7 @@ class UserMailer < ActionMailer::Base
             
         end
         
-        def find_recommendation_articles (user_articles, subscription_articles)
+        def find_recommendation_articles user_articles, subscription_articles
             
             # loop over subscription articles and check whether it is in user_articles (by resolved URL) if it is remove from subscription_articles
             user_articles_urls = Array.new
