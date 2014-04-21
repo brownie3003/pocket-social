@@ -6,50 +6,26 @@ class UserMailer < ActionMailer::Base
         
         @user = user
         
-        # Dirty code for users that  have not subscribed to anyone to give them a load of recommendations
+        # We have 3 cases
+        # 1. User doesn't have any subscriptions (they may have associated their pocket though?)
+        # 2. User has subscriptions but hasn't associated their pocket
+        # 3. User has subscriptions and has associated their pocket
+        
+        # Should return @recommendation_array to be used in the email
+        
+        # Case 1
         if user.subscriptions.empty?
-            @recommendation_array = Array.new
             
-            User.each do |user|
-                
-                if user.pocket.nil?
-                    # If the user has no 
-                    next
-                else
-                    user_articles(User.find_by(id: user.id), "all", (Time.now - 2.weeks)).each do |id, article|
-                        
-                        if article["resolved_url"].include? "ifttt"
-                            next
-                        elsif @recommendation_array.select{|element| element[:url] == article["resolved_url"]}.empty?
-                            
-                            # We need to push this article into our array with certain paramaters.
-                            @recommendation_array << {
-                                url: article["resolved_url"], 
-                                title: article["resolved_title"], 
-                                excerpt: article["excerpt"], 
-                                being_read_by: [user[:id]]
-                            }
-                        
-                        # In the case where we do find a match, i.e the above is true
-                        else
-                            
-                            # Get the index of the element where the url matches the article url
-                            index = @recommendation_array.index{|element| element[:url] == article["resolved_url"]}
-                            
-                            # Append the subscription user to the :being_read_by key of the hash
-                            @recommendation_array[index][:being_read_by] << user[:id]
-                        end        
-                    end
-                end
-            end
-            
-            @recommendation_array.sort_by!{ |article| article[:being_read_by].count }.reverse
+            @recommendation_array = get_all_articles
             
         else
             
+            # Case 2
             if user.pocket.nil?
                 user_articles = []
             else
+                
+                # Case 3
                 user_articles = user_articles(@user, "all")
             end
             
@@ -64,12 +40,27 @@ class UserMailer < ActionMailer::Base
         mail(to: user.email , subject: "Weekly article recommendations from Pocket-Social", bcc: "brownie3003@gmail.com")
     end
     
-    def add_article_from_email article, user    
-        add_article_helper article, user.pocket.access_token
-        redirect_to User.find_by(id: user.id)
-    end
+
     
     private
+    
+        def get_all_articles
+            recommendation_array = Array.new
+            
+            User.each do |user|
+                
+                if user.pocket.nil?
+                    # If the user has no pocket then we can't get any articles from them
+                    next
+                else
+                    
+                    create_articles_array recommendation_array, user
+                    
+                end
+            end
+            
+            build_recommendations (recommendation_array)
+        end
     
         # Method that gets all articles that are available from subscriptions
         def get_subscription_articles user
@@ -78,38 +69,47 @@ class UserMailer < ActionMailer::Base
             subscription_articles = Array.new
             
             # Loop over each subcription object
-            user.subscriptions.each do |subscription|
+            user.subscriptions.each do |user|
                 
-                # Loop over each article from the subscription user in this loop
-                user_articles(User.find_by(id: subscription[:id]), "all", (Time.now - 2.weeks)).each do |id, article|
-                    
-                    # Matt Clifford uses IFTT which regularly doesn't get an article.
-                    if article["resolved_url"].include? "ifttt"
-                        next
-                    # If we can not find an element that has a url key with the same value as the articles url 
-                    elsif subscription_articles.select{|element| element[:url] == article["resolved_url"]}.empty?
-                        
-                        # We need to push this article into our array with certain paramaters.
-                        subscription_articles << {
-                            url: article["resolved_url"], 
-                            title: article["resolved_title"], 
-                            excerpt: article["excerpt"], 
-                            being_read_by: [subscription[:id]]
-                        }
-                    
-                    # In the case where we do find a match, i.e the above is true
-                    else
-                        
-                        # Get the index of the element where the url matches the article url
-                        index = subscription_articles.index{|element| element[:url] == article["resolved_url"]}
-                        
-                        # Append the subscription user to the :being_read_by key of the hash
-                        subscription_articles[index][:being_read_by] << subscription[:id]
-                    end
-                end
+                create_articles_array articles_array, user
+                
             end
             
             return subscription_articles
+        end
+        
+        def create_articles_array articles_array, user
+            
+            # Loop over each article from the subscription user in this loop
+            user_articles(User.find_by(id: user[:id]), "all", (Time.now - 2.weeks)).each do |id, article|
+                
+                # Matt Clifford uses IFTT which regularly doesn't get an article.
+                if article["resolved_url"].include? "ifttt"
+                    next
+                # If we can not find an element that has a url key with the same value as the articles url 
+                elsif articles_array.select{|element| element[:url] == article["resolved_url"]}.empty?
+                    
+                    # We need to push this article into our array with certain paramaters.
+                    articles_array << {
+                        url: article["resolved_url"], 
+                        title: article["resolved_title"], 
+                        excerpt: article["excerpt"], 
+                        being_read_by: [subscription[:id]]
+                    }
+                
+                # In the case where we do find a match, i.e the above is true
+                else
+                    
+                    # Get the index of the element where the url matches the article url
+                    index = articles_array.index{|element| element[:url] == article["resolved_url"]}
+                    
+                    # Append the subscription user to the :being_read_by key of the hash
+                    articles_array[index][:being_read_by] << user[:id]
+                end
+            end
+            
+            return articles_array
+            
         end
         
         def find_recommendation_articles (user_articles, subscription_articles)
