@@ -129,6 +129,16 @@ class UserMailer < ActionMailer::Base
                 # If this article's URL can be found in user_articles_urls then remove it from the subscription articles because we've already read it
                 if user_articles_urls.include? article[:url] or user_articles_titles.include? article[:title]
                     subscription_articles.delete(article)
+                    puts "deleted #{article}"
+                end
+            end
+            
+            # This is fucking hideous but for some reason the first time around we don't get all the articles?!?!!!!
+            subscription_articles.each do |article|
+                # If this article's URL can be found in user_articles_urls then remove it from the subscription articles because we've already read it
+                if user_articles_urls.include? article[:url] or user_articles_titles.include? article[:title]
+                    subscription_articles.delete(article)
+                    puts "deleted #{article}"
                 end
             end
             
