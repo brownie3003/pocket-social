@@ -116,15 +116,18 @@ class UserMailer < ActionMailer::Base
             
             # loop over subscription articles and check whether it is in user_articles (by resolved URL) if it is remove from subscription_articles
             user_articles_urls = Array.new
+            user_articles_titles = Array.new
             
+            # For some reason only urls wasn't always catching articles, so will check against urls and titles
             user_articles.each do |id, article|
                 user_articles_urls << article["resolved_url"]
+                user_articles_titles << article["resolved_title"]
             end
             
             # Loop over the subscription articles array
             subscription_articles.each do |article|
                 # If this article's URL can be found in user_articles_urls then remove it from the subscription articles because we've already read it
-                if !user_articles_urls.select{|url| url == article[:url]}.empty?
+                if user_articles_urls.include? article[:url] or user_articles_titles.include? article[:title]
                     subscription_articles.delete(article)
                 end
             end
