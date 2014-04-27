@@ -16,7 +16,8 @@ class UsersController < ApplicationController
             @user_articles = user_articles(@user, "all", (Time.now - 2.weeks)  ) 
         end
         
-        unless current_user
+        # Bloody current_user not set on login breaking rails app. Quick fix
+        if current_user != nil
             if !current_user.pocket.nil?
                 current_user_article = user_articles(current_user, "all") 
                 @current_user_urls = Array.new
