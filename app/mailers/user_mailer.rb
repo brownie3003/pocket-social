@@ -134,6 +134,7 @@ class UserMailer < ActionMailer::Base
             end
             
             # This is fucking hideous but for some reason the first time around we don't get all the articles?!?!!!!
+            # Never let anyone read this. I apologise if you are reading this. I'm so so so sorry.
             subscription_articles.each do |article|
                 # If this article's URL can be found in user_articles_urls then remove it from the subscription articles because we've already read it
                 if user_articles_urls.include? article[:url] or user_articles_titles.include? article[:title]

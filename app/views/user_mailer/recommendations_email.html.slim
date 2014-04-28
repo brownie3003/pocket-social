@@ -2,14 +2,6 @@ p
     | Dear 
     = @user.id
 
-p    
-    | Happy Easter! Here are your article recommendations from Pocket-Social.
-
-p
-    | You can see all the articles a user is reading at 
-    = link_to "Pocket-Social.com", "pocket-social.herokuapp.com" 
-    |  and find more people to subscribe to so their articles contribute to your recommendations each week.
-
 - if @user.subscriptions.empty?
     p 
         | You don't have subscriptions on Pocket-Social. Pocket-Social works by sourcing recommendations based on what your network is reading.
@@ -17,6 +9,10 @@ p
     p
         = link_to "Pocket-Social Users List", users_url
     p For now we've sourced some recommendations by finding the most popular articles among our readers.
+
+- else
+    p
+        | Here are your article recommendations for the week.
 
 // We don't want to give more than 10 article recommendations
 - article_count = 0
