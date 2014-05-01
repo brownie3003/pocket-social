@@ -1,5 +1,7 @@
 p#notice = notice
 
+= current_user
+
 - unless current_user == @user
     - if @user.pocket == nil
         p Sorry this user has not associated their pocket account yet so you can't subscribe to them.
