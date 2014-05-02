@@ -3,7 +3,11 @@ module SessionsHelper
     def sign_in user
         remember_token = User.new_remember_token
         cookies.permanent[:remember_token] = remember_token
-        user.update_attribute(:remember_token, remember_token)    
+        user.update_attribute(:remember_token, remember_token)
+        until cookies[:remember_token] == remember_token
+            puts "waiting for browser"
+            sleep(1)
+        end  
         self.current_user = user
     end
     

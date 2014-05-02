@@ -13,7 +13,7 @@ class UsersController < ApplicationController
     # GET /users/1.json
     def show
         @current_user = current_user
-        puts "Current User is set to: #{current_user}"
+        puts "Current User is set to: #{current_user.id}"
         
         if !@user.pocket.nil?
             @user_articles = user_articles(@user, "all", (Time.now - 2.weeks)  ) 
