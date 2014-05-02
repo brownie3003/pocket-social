@@ -2,7 +2,6 @@ class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
     before_action :signed_in_user, only: [:edit, :update, :index]
     before_action :correct_user, only: [:edit, :update]
-    before_action :current_user, only: [:show]
     
     # GET /users
     # GET /users.json
@@ -49,7 +48,7 @@ class UsersController < ApplicationController
         
         respond_to do |format|
             if @user.save
-                sign_in @user
+                sign_up @user
                 format.html { redirect_to @user, notice: 'User was successfully created.' }
                 format.json { render action: 'show', status: :created, location: @user }
             else
