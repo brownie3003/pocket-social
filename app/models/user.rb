@@ -39,7 +39,8 @@ class User
   
   # Should probably add a salt if ever going to production
   def User.new_remember_token
-    SecureRandom.urlsafe_base64
+    # SecureRandom.urlsafe_base64
+    rand(20)
   end
 
   # def User.digest(token)
