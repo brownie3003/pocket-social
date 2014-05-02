@@ -12,6 +12,7 @@ class UsersController < ApplicationController
     # GET /users/1
     # GET /users/1.json
     def show
+        @current_user = current_user
         puts "Current User is set to: #{current_user}"
         
         if !@user.pocket.nil?
