@@ -42,7 +42,6 @@ class User
     SecureRandom.urlsafe_base64
   end
 
-  # Mongoid has a has method so named it app_hash
   def User.digest(token)
     Digest::SHA1.hexdigest(token.to_s)
   end
