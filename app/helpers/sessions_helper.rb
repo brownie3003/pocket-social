@@ -9,6 +9,7 @@ module SessionsHelper
         sleep(0.5)
         user.update_attribute(:remember_token, remember_token)
         sleep(0.5)
+        puts "#{User.find(user)}"
         self.current_user = user
         puts current_user.id
         sleep(0.5)
