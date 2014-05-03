@@ -3,15 +3,15 @@ module SessionsHelper
     def sign_in user
         remember_token = User.new_remember_token
         puts remember_token
-        sleep(5)
+        sleep(0.5)
         cookies.permanent[:remember_token] = remember_token
         puts cookies[:remember_token]
-        sleep(5)
+        sleep(0.5)
         user.update_attribute(:remember_token, remember_token)
-        sleep(5)
+        sleep(0.5)
         self.current_user = user
-        puts current_user
-        sleep(5)
+        puts current_user.id
+        sleep(0.5)
     end
     
     def current_user=(user)
