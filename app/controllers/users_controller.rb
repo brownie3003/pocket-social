@@ -2,6 +2,7 @@ class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
     before_action :signed_in_user, only: [:edit, :update, :index]
     before_action :correct_user, only: [:edit, :update]
+    before_action :set_current_user, only: [:show]
     
     # GET /users
     # GET /users.json
@@ -12,7 +13,6 @@ class UsersController < ApplicationController
     # GET /users/1
     # GET /users/1.json
     def show
-        @current_user = current_user
         puts "Current User is set to: #{current_user}"
         
         if !@user.pocket.nil?
@@ -112,5 +112,9 @@ class UsersController < ApplicationController
         def correct_user
             @user = User.find(params[:id])
             redirect_to(root_url) unless current_user?(@user)
+        end
+        
+        def set_current_user
+            @current_user = User.find_by(remember_token: cookies[:remember_token])
         end
 end
