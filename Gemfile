@@ -1,5 +1,7 @@
 source 'https://rubygems.org'
 
+ruby '2.1.1'
+
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
 gem 'rails', '4.0.2'
 
@@ -49,7 +51,7 @@ gem 'bson_ext'
 
 gem 'httparty', '0.13.0'
 
-gem 'bootstrap-sass', '3.1.1.0'
+gem 'bootstrap-sass', '3.1.1.1'
 
 gem 'rails_12factor', group: :production
 
@@ -58,5 +60,12 @@ gem 'pry-rails', :group => :development
 gem 'will_paginate_mongoid', '2.0.1'
 
 group :development, :test do
-  gem 'rspec-rails', '~> 3.0.0.beta'
+    gem 'rspec-rails', '~> 3.0.0.beta'
 end
+
+group :test do
+    gem 'selenium-webdriver', '2.35.1'
+    gem 'capybara'
+end
+
+gem 'factory_girl_rails', '4.4.1'

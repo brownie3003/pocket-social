@@ -12,22 +12,7 @@ class UsersController < ApplicationController
     # GET /users/1
     # GET /users/1.json
     def show
-        puts "Current User is set to: #{current_user}"
-        
-        if !@user.pocket.nil?
-            @user_articles = user_articles(@user, "all", (Time.now - 2.weeks)  ) 
-        end
-        
-        # Bloody current_user not set on login breaking rails app. Quick fix
-        if current_user != nil
-            if !current_user.pocket.nil?
-                current_user_article = user_articles(current_user, "all") 
-                @current_user_urls = Array.new
-                current_user_article.each do |id, article|
-                    @current_user_urls << article["resolved_url"]
-                end
-            end
-        end
+    
     end
     
     # GET /users/new
@@ -48,8 +33,8 @@ class UsersController < ApplicationController
         
         respond_to do |format|
             if @user.save
-                sign_up @user
-                format.html { redirect_to @user, notice: 'User was successfully created.' }
+                # sign_in @user
+                format.html { redirect_to @user, notice: 'Welcome to Pocket Social.' }
                 format.json { render action: 'show', status: :created, location: @user }
             else
                 format.html { render action: 'new' }

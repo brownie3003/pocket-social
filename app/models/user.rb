@@ -1,5 +1,6 @@
 class User
     include Mongoid::Document
+    include Mongoid::Timestamps
     include ActiveModel::SecurePassword
 
     before_save { self.email = email.downcase }
