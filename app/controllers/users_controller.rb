@@ -17,10 +17,12 @@ class UsersController < ApplicationController
             # Currently only getting 2 weeks worth of articles, prevents heavy users of pocket slowing down load.
             @articles = user_articles(@user, "all", (Time.now - 2.weeks))
             if @user != current_user
-                @current_user_articles = user_articles(current_user, "all")
-                @current_user_article_urls = Array.new
-                @current_user_articles.each do |id, article|
-                    @current_user_article_urls << article["resolved_url"]
+                if current_user
+                    @current_user_articles = user_articles(current_user, "all")
+                    @current_user_article_urls = Array.new
+                    @current_user_articles.each do |id, article|
+                        @current_user_article_urls << article["resolved_url"]
+                    end
                 end
             end
         end
