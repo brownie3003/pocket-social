@@ -61,11 +61,10 @@ gem 'will_paginate_mongoid', '2.0.1'
 
 group :development, :test do
     gem 'rspec-rails', '~> 3.0.0.beta'
+    gem 'fabrication', '2.11.2'
 end
 
 group :test do
     gem 'selenium-webdriver', '2.35.1'
     gem 'capybara'
 end
-
-gem 'factory_girl_rails', '4.4.1'

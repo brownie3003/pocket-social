@@ -1,10 +1,12 @@
 require 'spec_helper'
 
 describe "User pages" do
+    
     subject { page }
     
-    describe "profile page" do
-        let(:user) { FactoryGirl.create(:user) }
+    describe "visiting profile page" do
+        let(:user) { Fabricate(:user) }
+        # puts user.username
         before { visit user_path(user) }
         
         it { should have_content(user.username) }

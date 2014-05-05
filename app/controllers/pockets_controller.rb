@@ -23,7 +23,7 @@ class PocketsController < ApplicationController
     puts "test #{response["access_token"]}, username: #{response["username"]}"
     current_user.create_pocket(access_token: response["access_token"], username: response["username"])
     
-    redirect_to current_user, notice: "Pocket was successfully associated"
+    redirect_to current_user, notice: "Pocket was successfully linked to your account."
     # 
     # respond_to do |format|
     #   if @pocket.save

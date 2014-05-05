@@ -64,11 +64,7 @@ GEM
     diff-lcs (1.2.5)
     erubis (2.7.0)
     execjs (2.0.2)
-    factory_girl (4.4.0)
-      activesupport (>= 3.0.0)
-    factory_girl_rails (4.4.1)
-      factory_girl (~> 4.4.0)
-      railties (>= 3.0.0)
+    fabrication (2.11.2)
     ffi (1.9.3)
     hike (1.2.3)
     httparty (0.13.0)
@@ -176,7 +172,7 @@ GEM
       railties (>= 3.0, < 4.1)
       slim (~> 2.0)
     slop (3.5.0)
-    sprockets (2.8.0)
+    sprockets (2.11.0)
       hike (~> 1.2)
       multi_json (~> 1.0)
       rack (~> 1.0)
@@ -219,7 +215,7 @@ DEPENDENCIES
   bson_ext
   capybara
   coffee-rails (~> 4.0.0)
-  factory_girl_rails (= 4.4.1)
+  fabrication (= 2.11.2)
   httparty (= 0.13.0)
   jbuilder (~> 1.2)
   jquery-rails

@@ -15,6 +15,7 @@ Dir[Rails.root.join("spec/support/**/*.rb")].each { |f| require f }
 RSpec.configure do |config|
     config.mock_with :rspec
     
+    # Not working for some reason!?!
     config.before :each do
         Mongoid.purge!
     end
