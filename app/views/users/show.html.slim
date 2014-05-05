@@ -1,8 +1,10 @@
 p#notice = flash.now[:notice]
 
 p
-  strong Username: 
-  = @user.username
+    = signed_in?
 p
-  strong Email: 
-  = @user.email
+    strong Username: 
+    = @user.username
+p
+    strong Email: 
+    = @user.email
