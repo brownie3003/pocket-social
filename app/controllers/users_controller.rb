@@ -1,7 +1,8 @@
 class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
-    before_action :signed_in_user, only: [:edit, :update, :index]
+    before_action :authenticate_user!, only: [:edit, :update]
     before_action :correct_user, only: [:edit, :update]
+    after_filter :store_location
     
     # GET /users
     # GET /users.json
@@ -12,7 +13,17 @@ class UsersController < ApplicationController
     # GET /users/1
     # GET /users/1.json
     def show
-    
+        if @user.pocket
+            # Currently only getting 2 weeks worth of articles, prevents heavy users of pocket slowing down load.
+            @articles = user_articles(@user, "all", (Time.now - 2.weeks))
+            if @user != current_user
+                @current_user_articles = user_articles(current_user, "all")
+                @current_user_article_urls = Array.new
+                @current_user_articles.each do |id, article|
+                    @current_user_article_urls << article["resolved_url"]
+                end
+            end
+        end
     end
     
     # GET /users/new
@@ -22,25 +33,13 @@ class UsersController < ApplicationController
     
     # GET /users/1/edit
     def edit
-        # Unnesseary from Hartl tutorial, because of before_action :set_user (+ see private methods...)
-        # @user = User.find(params[:id])
+        
     end
     
     # POST /users
     # POST /users.json
     def create
-        @user = User.new(user_params)
         
-        respond_to do |format|
-            if @user.save
-                # sign_in @user
-                format.html { redirect_to @user, notice: 'Welcome to Pocket Social.' }
-                format.json { render action: 'show', status: :created, location: @user }
-            else
-                format.html { render action: 'new' }
-                format.json { render json: @user.errors, status: :unprocessable_entity }
-            end
-        end
     end
     
     # PATCH/PUT /users/1
@@ -68,8 +67,14 @@ class UsersController < ApplicationController
     end
     
     def subscribe
-        current_user.subscribe!(User.find(params[:subscribe_to_user]))
-        redirect_to User.find(params[:subscribe_to_user])
+        if current_user.nil?
+            redirect_to new_user_registration_path, notice: "Hey new user, you've got to sign up before we can let you see what's in people's pockets."
+        elsif current_user.pocket.nil?
+            redirect_to :back, notice: "Whoa there buddy, before you can go rootlin' around in other poeple's pockets, you've got to link your pocket (psst... just above me is the link)"
+        else
+            current_user.subscribe!(User.find(params[:subscribe_to_user]))
+            redirect_to User.find(params[:subscribe_to_user])
+        end
     end
     
     def unsubscribe
@@ -95,6 +100,21 @@ class UsersController < ApplicationController
         
         def correct_user
             @user = User.find(params[:id])
-            redirect_to(root_url) unless current_user?(@user)
+            redirect_to(root_url) unless current_user == @user
+        end
+
+        def store_location
+        # store last url - this is needed for post-login redirect to whatever the user last visited.
+            if (request.fullpath != "/users/sign_in" &&
+                request.fullpath != "/users/sign_up" &&
+                request.fullpath != "/users/password" &&
+                request.fullpath != "/users/sign_out" &&
+                !request.xhr?) # don't store ajax calls
+                session[:previous_url] = request.fullpath 
+            end
+        end
+        
+        def after_sign_in_path_for(user)
+            session[:previous_url] || user_path(current_user)
         end
 end

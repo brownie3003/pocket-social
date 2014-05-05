@@ -26,7 +26,7 @@
                             li
                                 = link_to "Settings", edit_user_path(current_user)
                             li
-                                / = link_to "Log out", signout_path, method: "delete"
+                                = link_to "Log out", sign_out_path
                 - else
                     li
                         = link_to "Log in", sign_in_path

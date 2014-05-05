@@ -1,7 +1,7 @@
 @import "bootstrap";
 
 body {
-    padding: 60px;
+    padding-top: 60px;
 }
 
 .pocket_row {
@@ -13,4 +13,29 @@ body {
 }
 
 .pocket-social-form {
+}
+
+.profileBox {
+    padding-top: 20px;
+}
+
+.articles {
+    h2 {
+        text-align: center
+    }
+}
+
+.subscribe-btn {
+    display: block;
+    margin: auto;
+    padding: 10px;
+    margin-bottom: 20px;
+}
+
+.pocketReminder {
+    margin-top: -10px;
+    width: 100%;
+    text-align: center;
+    padding: 10px;
+    background: lightgrey;
 }

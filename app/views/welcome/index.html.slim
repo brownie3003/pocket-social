@@ -1,11 +1,15 @@
-h1 Pocket Social
-small Reading recommendations from the people you respect
+- if signed_in?
+    = render 'partials/user'
+-else
 
-h2 How does it work?
+    h1 Pocket Social
+    small Reading recommendations from the people you respect
 
-ol
-    li Sign up to Pocket-Social and link your Pocket account.
-    li Follow the people you respect that also use pocket. Find out what Paul Graham is hiding in his pocket ;)
-    li Each week we'll send you an email of recommended articles based on the articles your network is actually reading.
+    h2 How does it work?
 
-= link_to "Join", new_user_registration_path, class: "btn btn-primary"
+    ol
+        li Sign up to Pocket-Social and link your Pocket account.
+        li Follow the people you respect that also use pocket. Find out what Paul Graham is hiding in his pocket ;)
+        li Each week we'll send you an email of recommended articles based on the articles your network is actually reading.
+
+    = link_to "Join", new_user_registration_path, class: "btn btn-primary"

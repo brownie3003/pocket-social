@@ -42,6 +42,8 @@ class User
     # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
     # field :locked_at,       type: Time
     
+    embeds_one :pocket
+    
     has_and_belongs_to_many :subscriptions, class_name: 'User', inverse_of: :subscribers, autosave: true
     has_and_belongs_to_many :subscribers, class_name: 'User', inverse_of: :subscriptions
 

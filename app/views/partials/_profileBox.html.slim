@@ -1,0 +1,18 @@
+.col-xs-3.profileBox
+    p
+        strong Username: 
+        = @user.username
+    p
+        strong Email: 
+        = @user.email
+    p 
+        | Subscribers: 
+        = @user.subscribers.count
+        | , Subscriptions: 
+        = @user.subscriptions.count
+
+    - if current_user != @user and @user.pocket
+        - if current_user.nil? or !current_user.subscriptions.include? @user 
+            = render 'subscribe_form'
+        - else
+            = render 'unsubscribe_form'

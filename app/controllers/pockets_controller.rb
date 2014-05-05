@@ -1,7 +1,7 @@
 class PocketsController < ApplicationController
   before_action :set_pocket, only: [:update, :destroy]
   # signed_in_user in Sessions_helper (made available to all controllers as included in Application Controller)
-  before_action :signed_in_user
+  before_action :authenticate_user!
   
   def new
     # Connect to Pocket and get username + token.

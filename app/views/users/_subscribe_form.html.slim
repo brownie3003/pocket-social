@@ -1,3 +1,9 @@
-= form_for current_user, :url => {action: 'subscribe'} do |f|
+/ Dirty hack so I can get non signed up people attempting to subscribe
+- if current_user.nil?
+    - user = @user
+- else
+    - user = current_user
+
+= form_for user, :url => {action: 'subscribe'} do |f|
     = hidden_field_tag :subscribe_to_user, @user.id
-    = f.submit "Subscribe", class: "btn btn-large btn-primary"
+    = f.submit "Subscribe", class: "btn btn-large btn-primary subscribe-btn"
