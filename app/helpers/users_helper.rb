@@ -33,4 +33,12 @@ module UsersHelper
     def add_article_helper article, access_token
         HTTParty.post("https://getpocket.com/v3/add",{ headers: POCKET_HEADERS, body: { url: article, consumer_key: POCKET_KEY, access_token: access_token}.to_json })
     end
+    
+    def article_feed user
+        state = "all"
+        time = (Time.now - 2.weeks)
+        
+        article_feed = array.new
+        user.subscriptions.each
+    end
 end

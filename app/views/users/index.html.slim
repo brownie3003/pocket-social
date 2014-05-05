@@ -1,5 +1,11 @@
 h1 Users
-p I should probaby put a search thing on this....
+
+= form_tag users_path, method: 'get' do
+    p
+        = text_field_tag :search, params[:search], placeholder: "Search by Email"
+        = submit_tag "Search", name: nil
+
+
 
 table.table.table-hover
     thead

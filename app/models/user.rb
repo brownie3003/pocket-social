@@ -57,4 +57,12 @@ class User
     def unsubscribe!(user)
         self.subscriptions.delete(user)
     end
+    
+    def self.search(search)
+        if search
+            where(email: /#{Regexp.escape(search)}/i)
+        else
+            all
+        end
+    end
 end
