@@ -3,7 +3,7 @@ module UsersHelper
     POCKET_HEADERS = { "Content-Type" => "application/json", "X-Accept" => "application/json" }
     
     # Get user articles from a users pocket
-    # params: user to check their pocket, state of articles to retrieve ("unread", "archive", "all")(optional), time: How long ago to look for must be in unix timestamp (optional)
+    # params: user to check their pocket, state of articles to retrieve ("unread", "archive", "all"), time: How long ago to look for must be in unix timestamp (optional)
     def user_articles user, state, *time
         time = time[0].to_i
         
