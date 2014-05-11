@@ -8,7 +8,7 @@ class UserMailer < ActionMailer::Base
         
         # We have 3 cases
         # 1. User doesn't have any subscriptions (they may have associated their pocket though?)
-        # 2. User has subscriptions but hasn't associated their pocket
+        # 2. User has subscriptions but hasn't associated their pocket 
         # 3. User has subscriptions and has associated their pocket
         
         # Should return @recommendation_array to be used in the email
@@ -137,6 +137,7 @@ class UserMailer < ActionMailer::Base
             
         end
         
+        # Move articles that are being read by more of your network to the top of the array so they get recommended.
         def build_recommendations (recommendation_articles)
             recommendation_articles.sort_by!{ |article| article[:being_read_by].count }.reverse
         end
