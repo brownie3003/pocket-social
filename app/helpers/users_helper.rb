@@ -29,16 +29,47 @@ module UsersHelper
         
         return articles
     end
+
+    # returns a list of the last 5 days of articles that subscriptions have added to their pocket
+    def subscription_articles(user)
+        subscription_articles = {}
+
+        # |subscription| is another user that our user is subscribed to
+        user.subscriptions.each do |subscription|
+            user_articles(subscription, 'all', (Time.now - 5.days)).each do |id, article|
+                
+                if subscription_articles.has_key?(id)
+                    # Add the name of the user to the :being_read_by field.
+                    subscription_articles[:id][:being_read_by] << subscription.username
+                else
+                    # Add article to subscription_articles
+                    subscription_articles.store(id, article)
+                    
+                    # Add new key value pair being_read_by: "subscription.username"
+                    subscription_articles[id][:being_read_by] = [subscription.username]
+                end
+            end
+        end
+        return subscription_articles
+    end
     
     def add_article_helper article, access_token
         HTTParty.post("https://getpocket.com/v3/add",{ headers: POCKET_HEADERS, body: { url: article, consumer_key: POCKET_KEY, access_token: access_token}.to_json })
     end
-    
-    def article_feed user
-        state = "all"
-        time = (Time.now - 2.weeks)
-        
-        article_feed = array.new
-        user.subscriptions.each
+
+    def article_feed(user)
+        user_articles = user_articles(user, 'all')
+        subscription_articles = subscription_articles(user)
+        prune_articles(user_articles, subscription_articles)
+    end
+
+
+    def prune_articles(user, subscriptions)
+        subscriptions.each do |id, article|
+            if user.has_key?(id)
+                subscriptions.delete(id)
+            end
+        end
+        return subscriptions
     end
 end

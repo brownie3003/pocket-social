@@ -2,3 +2,16 @@
 
 .col-xs-9
     h2 Articles Feed
+    - @article_feed.each do |id, article|
+        .row.pocket_row
+            .col-xs-8
+                = link_to "#{article["resolved_title"]}", article["resolved_url"]
+                p = article["excerpt"]
+                p 
+                    | Article being read by 
+                    = article[:being_read_by]
+            .col-xs-4
+                / = form_for current_user, :url => {action: 'add_article'} do |f|
+                /     = hidden_field_tag :user, @user.id
+                /     = hidden_field_tag :article, article["resolved_url"]
+                /     = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"

@@ -1,73 +1,63 @@
 class PocketsController < ApplicationController
-  before_action :set_pocket, only: [:update, :destroy]
-  # signed_in_user in Sessions_helper (made available to all controllers as included in Application Controller)
-  before_action :authenticate_user!
-  
-  def new
-    # Connect to Pocket and get username + token.
-    request_pocket
-  end
-  
-  def pocket_auth
-    puts session[:code]
-  end
+    before_action :set_pocket, only: [:update, :destroy]
+    # signed_in_user in Sessions_helper (made available to all controllers as included in Application Controller)
+    before_action :authenticate_user!
     
-  # POST /pockets
-  # POST /pockets.json
-  def create
-    response = create_pocket
-    
-    puts response
-
-    
-    puts "test #{response["access_token"]}, username: #{response["username"]}"
-    current_user.create_pocket(access_token: response["access_token"], username: response["username"])
-    
-    redirect_to current_user, notice: "Pocket was successfully linked to your account."
-    # 
-    # respond_to do |format|
-    #   if @pocket.save
-    #     format.html { redirect_to current_user, notice: 'Pocket was successfully created.' }
-    #     format.json { render action: 'show', status: :created, location: current_user }
-    #   else
-    #     format.html { render action: 'new' }
-    #     format.json { render json: @pocket.errors, status: :unprocessable_entity }
-    #   end
-    # end
-  end
-
-  # PATCH/PUT /pockets/1
-  # PATCH/PUT /pockets/1.json
-  def update
-    respond_to do |format|
-      if @pocket.update(pocket_params)
-        format.html { redirect_to @pocket, notice: 'Pocket was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @pocket.errors, status: :unprocessable_entity }
-      end
+    def new
+        # Connect to Pocket and get username + token.
+        request_pocket
     end
-  end
-
-  # DELETE /pockets/1
-  # DELETE /pockets/1.json
-  def destroy
-    @pocket.destroy
-    respond_to do |format|
-      format.html { redirect_to pockets_url }
-      format.json { head :no_content }
+    
+    def pocket_auth
+        puts session[:code]
     end
-  end
+        
+    # POST /pockets
+    # POST /pockets.json
+    def create
+        response = create_pocket
+        
+        puts response
 
-  private
-    # Use callbacks to share common setup or constraints between actions.
-    def set_pocket
-      @pocket = Pocket.find(params[:id])
+        
+        puts "test #{response["access_token"]}, username: #{response["username"]}"
+        current_user.create_pocket(access_token: response["access_token"], username: response["username"])
+        
+        redirect_to current_user, notice: "Pocket was successfully linked to your account."
     end
 
-    # Never trust parameters from the scary internet, only allow the white list through.
-    def pocket_params
-      params.require(:pocket).permit(:username, :token)
+    # PATCH/PUT /pockets/1
+    # PATCH/PUT /pockets/1.json
+    def update
+        respond_to do |format|
+            if @pocket.update(pocket_params)
+                format.html { redirect_to @pocket, notice: 'Pocket was successfully updated.' }
+                format.json { head :no_content }
+            else
+                format.html { render action: 'edit' }
+                format.json { render json: @pocket.errors, status: :unprocessable_entity }
+            end
+        end
     end
+
+    # DELETE /pockets/1
+    # DELETE /pockets/1.json
+    def destroy
+        @pocket.destroy
+        respond_to do |format|
+            format.html { redirect_to pockets_url }
+            format.json { head :no_content }
+        end
+    end
+
+    private
+        # Use callbacks to share common setup or constraints between actions.
+        def set_pocket
+            @pocket = Pocket.find(params[:id])
+        end
+
+        # Never trust parameters from the scary internet, only allow the white list through.
+        def pocket_params
+            params.require(:pocket).permit(:username, :token)
+        end
 end
