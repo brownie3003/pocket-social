@@ -60,7 +60,8 @@ module UsersHelper
     def article_feed(user)
         user_articles = user_articles(user, 'all')
         subscription_articles = subscription_articles(user)
-        prune_articles(user_articles, subscription_articles)
+        prune_articles(user_articles, subscription_articles).shuffle!
+
     end
 
 
