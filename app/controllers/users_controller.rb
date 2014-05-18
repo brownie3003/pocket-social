@@ -69,7 +69,7 @@ class UsersController < ApplicationController
     end
     
     def subscribe
-        if user_signed_in?
+        if !user_signed_in?
             redirect_to new_user_registration_path, notice: "Hey new user, you've got to sign up before we can let you see what's in people's pockets."
         elsif current_user.pocket.nil?
             redirect_to :back, notice: "Whoa there buddy, before you can go rootlin' around in other poeple's pockets, you've got to link your pocket (psst... just above me is the link)"
