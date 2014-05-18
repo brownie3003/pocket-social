@@ -60,16 +60,17 @@ module UsersHelper
     def article_feed(user)
         user_articles = user_articles(user, 'all')
         subscription_articles = subscription_articles(user)
-        article_feed = Hash[prune_articles(user_articles, subscription_articles).to_a.shuffle]
-
+        prune_articles(user_articles, subscription_articles)
     end
 
 
     def prune_articles(user, subscriptions)
-        subscriptions.each do |id, article|
-            if user.has_key?(id)
-                subscriptions.delete(id)
-            end
+        subscriptions.each do |subscription_article_id, subscription_article_hash|
+            user.each do |users_article_id, users_article_hash|
+                if users_article_hash["resolved_id"] == subscription_article_hash["resolved_id"]
+                    subscriptions.delete(subscription_article_id)
+                end
+            end 
         end
         return subscriptions
     end
