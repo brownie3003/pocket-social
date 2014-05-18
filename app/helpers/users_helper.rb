@@ -30,26 +30,28 @@ module UsersHelper
         return articles
     end
 
-    # returns a list of the last 5 days of articles that subscriptions have added to their pocket
+    # returns a list of the last 2 weeks of articles that subscriptions have added to their pocket
     def subscription_articles(user)
-        subscription_articles = {}
+        subscription_articles = { 1 => {"resolved_id" => "placeholder"}}
+        copy_of_subscription_articles = { 1 => {"resolved_id" => "placeholder"}}
 
         # |subscription| is another user that our user is subscribed to
-        user.subscriptions.each do |subscription|
-            user_articles(subscription, 'all', (Time.now - 5.days)).each do |id, article|
-                
-                if subscription_articles.has_key?(id)
-                    # Add the name of the user to the :being_read_by field.
-                    subscription_articles[:id][:being_read_by] << subscription.username
-                else
-                    # Add article to subscription_articles
-                    subscription_articles.store(id, article)
-                    
-                    # Add new key value pair being_read_by: "subscription.username"
-                    subscription_articles[id][:being_read_by] = [subscription.username]
+        user.subscriptions.each do |subscription_user|
+            user_articles(subscription_user, 'all', (Time.now - 2.weeks)).each do |subscription_article_id, subscription_article_hash|
+                copy_of_subscription_articles.each do |article_id, article_hash|
+                    if article_hash["resolved_id"] == subscription_article_hash["resolved_id"]
+                        # article_hash[:being_read_by] << subscription_user.username
+                        puts "add user id: #{article_id}"
+                        subscription_articles[article_id][:being_read_by] << subscription_user.username 
+                    else
+                        subscription_articles[subscription_article_id] = subscription_article_hash
+                        subscription_articles[subscription_article_id][:being_read_by] = [subscription_user.username]
+                    end
                 end
+                copy_of_subscription_articles.merge!(subscription_articles)
             end
         end
+        subscription_articles.delete(1)
         return subscription_articles
     end
     
@@ -67,11 +69,23 @@ module UsersHelper
     def prune_articles(user, subscriptions)
         subscriptions.each do |subscription_article_id, subscription_article_hash|
             user.each do |users_article_id, users_article_hash|
-                if users_article_hash["resolved_id"] == subscription_article_hash["resolved_id"]
+                if users_article_hash["resolved_id"] == subscription_article_hash["resolved_id"] or users_article_hash["resolved_url"].include? "ifttt"
                     subscriptions.delete(subscription_article_id)
                 end
             end 
         end
         return subscriptions
+    end
+
+    def order_articles(articles)
+        # Work in progress
+        ordered_articles = {}
+        articles.each do |id, article|
+            ordered_articles[id] = article.sort_by{ |key, value| being_read_} 
+        end
+    end
+
+    def randomize_articles(articles)
+        articles = Hash[articles.to_a.shuffle]
     end
 end

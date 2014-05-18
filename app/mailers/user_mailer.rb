@@ -3,39 +3,43 @@ class UserMailer < ActionMailer::Base
     default from: "team@pocket-social.com"
     
     def recommendations_email user
-        
+
         @user = user
         
-        # We have 3 cases
-        # 1. User doesn't have any subscriptions (they may have associated their pocket though?)
-        # 2. User has subscriptions but hasn't associated their pocket 
-        # 3. User has subscriptions and has associated their pocket
+        @recommendations = randomize_articles(article_feed(user))
+
+        # @user = user
         
-        # Should return @recommendation_array to be used in the email
+        # # We have 3 cases
+        # # 1. User doesn't have any subscriptions (they may have associated their pocket though?)
+        # # 2. User has subscriptions but hasn't associated their pocket 
+        # # 3. User has subscriptions and has associated their pocket
         
-        # Case 1
-        if user.subscriptions.empty?
+        # # Should return @recommendation_array to be used in the email
+        
+        # # Case 1
+        # if user.subscriptions.empty?
             
-            @recommendation_array = get_all_articles
+        #     @recommendation_array = get_all_articles
             
-        else
+        # else
             
-            # Case 2
-            if user.pocket.nil?
-                user_articles = []
-            else
+        #     # Case 2
+        #     if user.pocket.nil?
+        #         user_articles = {}
+        #     else
                 
-                # Case 3
-                user_articles = user_articles(@user, "all")
-            end
+        #         # Case 3
+        #         articlefeed(@user)
+        #     end
             
-            subscription_articles = get_subscription_articles(@user)
+        #     subscription_articles = get_subscription_articles(@user)
             
-            recommendation_articles = find_recommendation_articles(user_articles, subscription_articles)
+        #     recommendation_articles = find_recommendation_articles(user_articles, subscription_articles)
             
-            @recommendation_array = build_recommendations(recommendation_articles)
+        #     @recommendation_array = build_recommendations(recommendation_articles)
             
-        end
+        # end
         
         mail(to: user.email , subject: "Weekly article recommendations from Pocket-Social", bcc: "brownie3003@gmail.com")
     end

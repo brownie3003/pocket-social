@@ -1,6 +1,8 @@
-- if signed_in?
+- if signed_in? and @user.pocket
     = render 'partials/user'
--else
+- elsif signed_in?
+    p Thanks for joining Pocket social, maybe you should add your pocket account.
+- else
 
     h1 Pocket Social
     small Reading recommendations from the people you respect
