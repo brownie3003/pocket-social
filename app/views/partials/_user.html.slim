@@ -5,13 +5,13 @@
     - @article_feed.each do |id, article|
         .row.pocket_row
             .col-xs-8
-                = link_to "#{article["resolved_title"]}", article["resolved_url"]
+                = link_to "#{article["resolved_title"]}", article["resolved_url"], target: '_blank'
                 p = article["excerpt"]
                 p 
                     = "Article being read by #{article[:being_read_by]}, added #{time_ago_in_words(Time.at(article["time_updated"].to_i).to_datetime)} ago"
 
             .col-xs-4
-                / = form_for current_user, :url => {action: 'add_article'} do |f|
-                /     = hidden_field_tag :user, @user.id
-                /     = hidden_field_tag :article, article["resolved_url"]
-                /     = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
+                = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
+                    = hidden_field_tag :user, @user.id
+                    = hidden_field_tag :article, article["resolved_url"]
+                    = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"

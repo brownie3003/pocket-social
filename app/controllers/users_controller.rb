@@ -84,7 +84,7 @@ class UsersController < ApplicationController
     
     def add_article
         add_article_helper params[:article], current_user.pocket.access_token
-        redirect_to User.find(params[:user])
+        redirect_to root_path
     end
 
     private
