@@ -13,51 +13,51 @@ p
     p We've updated the website so you can see what your subscriptions are reading at any time, check it out: www.pocket-social.com
     p Here are your article recommendations for the week.
 
-// We don't want to give more than 10 article recommendations
-- article_count = 0
+    // We don't want to give more than 10 article recommendations
+    - article_count = 0
 
-// We don't want to give more than 3 articles from a specific user
-- user_article_count = Hash.new
+    // We don't want to give more than 3 articles from a specific user
+    - user_article_count = Hash.new
 
-- @recommendations.each do |id, article|
-    
-    - if article_count == 10 then break end
+    - @recommendations.each do |id, article|
+        
+        - if article_count == 10 then break end
 
-    - if article[:being_read_by].count == 1
-        - article_reader = article[:being_read_by][0]
-        - if user_article_count.include? article_reader
-            - if user_article_count[article_reader] == 3
-                - next
+        - if article[:being_read_by].count == 1
+            - article_reader = article[:being_read_by][0]
+            - if user_article_count.include? article_reader
+                - if user_article_count[article_reader] == 3
+                    - next
+                - else
+                    - user_article_count[article_reader] += 1
             - else
-                - user_article_count[article_reader] += 1
-        - else
-            - user_article_count[article_reader] = 1
+                - user_article_count[article_reader] = 1
 
-    .row
-        .col-xs-2
-        .col-xs-4
-            h3 = link_to article["resolved_title"], article["resolved_url"]
-            p = article["excerpt"]
-        .col-xs-2
-            - if article[:being_read_by].count == 1
-                p 
-                    | Being read by 
-                    = link_to article[:being_read_by][0], user_url(User.find_by(id: article[:being_read_by][0]))
-            - else
-                p
-                    | Being read by 
-                    = article[:being_read_by].count 
-                    |  people in your network. (
-                    = article[:being_read_by].join(", ")
-                    | )
-        / .col-xs-2
-        /     = form_for @user, :url => {controller: 'users', host: "localhost:3000", action: 'add_article'} do |f|
-        /         = hidden_field_tag :user, @user.id
-        /         = hidden_field_tag :article, article["resolved_url"]
-        /         = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
+        .row
+            .col-xs-2
+            .col-xs-4
+                h3 = link_to article["resolved_title"], article["resolved_url"]
+                p = article["excerpt"]
+            .col-xs-2
+                - if article[:being_read_by].count == 1
+                    p 
+                        | Being read by 
+                        = link_to article[:being_read_by][0], user_url(User.find_by(id: article[:being_read_by][0]))
+                - else
+                    p
+                        | Being read by 
+                        = article[:being_read_by].count 
+                        |  people in your network. (
+                        = article[:being_read_by].join(", ")
+                        | )
+            / .col-xs-2
+            /     = form_for @user, :url => {controller: 'users', host: "localhost:3000", action: 'add_article'} do |f|
+            /         = hidden_field_tag :user, @user.id
+            /         = hidden_field_tag :article, article["resolved_url"]
+            /         = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
 
-    - article_count += 1
-    hr
+        - article_count += 1
+        hr
 
 p 
     | Pocket-Social is still in Alpha. Any questions or suggestions go to 
