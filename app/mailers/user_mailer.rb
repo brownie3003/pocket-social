@@ -6,7 +6,7 @@ class UserMailer < ActionMailer::Base
 
         @user = user
         
-        @recommendations = randomize_articles(article_feed(user))
+        @recommendations = order_by_popularity(article_feed(user))
 
         # @user = user
         

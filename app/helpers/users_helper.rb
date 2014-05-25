@@ -55,9 +55,6 @@ module UsersHelper
         return subscription_articles
     end
     
-    def add_article_helper article, access_token
-        HTTParty.post("https://getpocket.com/v3/add",{ headers: POCKET_HEADERS, body: { url: article, consumer_key: POCKET_KEY, access_token: access_token}.to_json })
-    end
 
     def article_feed(user)
         user_articles = user_articles(user, 'all')
@@ -77,15 +74,18 @@ module UsersHelper
         return subscriptions
     end
 
-    def order_articles(articles)
-        # Work in progress
-        ordered_articles = {}
-        articles.each do |id, article|
-            ordered_articles[id] = article.sort_by{ |key, value| being_read_} 
-        end
+    def order_by_popularity(articles)
+        articles.sort_by{ |id, article| article[:being_read_by].count }.reverse
+    end
+
+    def order_by_date(articles)
     end
 
     def randomize_articles(articles)
         articles = Hash[articles.to_a.shuffle]
+    end
+    
+    def add_article_helper article, access_token
+        HTTParty.post("https://getpocket.com/v3/add",{ headers: POCKET_HEADERS, body: { url: article, consumer_key: POCKET_KEY, access_token: access_token}.to_json })
     end
 end

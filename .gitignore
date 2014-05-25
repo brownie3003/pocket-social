@@ -15,4 +15,3 @@
 /log/*.log
 /tmp
 .env
-config/initializers/setup_mail.rb
