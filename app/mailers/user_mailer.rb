@@ -6,7 +6,10 @@ class UserMailer < ActionMailer::Base
 
         @user = user
         
-        @recommendations = order_by_popularity(article_feed(user))
+        # Check user has pocket and subscriptions, should change because people don't have to have pocket associated
+        if !user.pocket.nil? && !user.subscriptions.empty?
+            @recommendations = order_by_popularity(article_feed(user))
+        end
 
         # @user = user
         
