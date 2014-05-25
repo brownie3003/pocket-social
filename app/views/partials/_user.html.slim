@@ -8,8 +8,8 @@
                 = link_to "#{article["resolved_title"]}", article["resolved_url"]
                 p = article["excerpt"]
                 p 
-                    | Article being read by 
-                    = article[:being_read_by]
+                    = "Article being read by #{article[:being_read_by]}, added #{time_ago_in_words(Time.at(article["time_updated"].to_i).to_datetime)} ago"
+
             .col-xs-4
                 / = form_for current_user, :url => {action: 'add_article'} do |f|
                 /     = hidden_field_tag :user, @user.id

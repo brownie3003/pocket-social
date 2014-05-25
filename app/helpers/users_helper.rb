@@ -20,9 +20,9 @@ module UsersHelper
             }.to_json
         })["list"]
         
-        # Delete any unresolved articles from hash
+        # Delete any unresolved articles from hash (or IFTTT articles from Mr. Clifford)
         articles.each do |id, article|
-            if article["resolved_url"].nil?
+            if article["resolved_url"].nil? || article["resolved_title"] == "Missing Link"
                 articles.delete(id)
             end
         end
@@ -41,7 +41,7 @@ module UsersHelper
                 copy_of_subscription_articles.each do |article_id, article_hash|
                     if article_hash["resolved_id"] == subscription_article_hash["resolved_id"]
                         # article_hash[:being_read_by] << subscription_user.username
-                        puts "add user id: #{article_id}"
+                        # puts "add user id: #{article_id}"
                         subscription_articles[article_id][:being_read_by] << subscription_user.username 
                     else
                         subscription_articles[subscription_article_id] = subscription_article_hash
@@ -79,6 +79,7 @@ module UsersHelper
     end
 
     def order_by_date(articles)
+        articles.sort_by{ | id, article| article["time_updated"] }
     end
 
     def randomize_articles(articles)
