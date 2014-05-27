@@ -21,6 +21,10 @@ table.table.table-hover
                     td = user.email
                     td
                         = link_to "View", user, class: "btn btn-primary"
+                        - if current_user.subscriptions.include? user
+                            = render 'unsubscribe_form', user: user
+                        - else
+                            = render 'subscribe_form', user: user
 
 
 = will_paginate @users 

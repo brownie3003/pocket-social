@@ -1,6 +1,6 @@
 class UsersController < ApplicationController
     before_action :set_user, only: [:show, :edit, :update, :destroy]
-    before_action :authenticate_user!, only: [:edit, :update]
+    before_action :authenticate_user!, only: [:edit, :update, :subscribe, :unsubscribe]
     before_action :correct_user, only: [:edit, :update]
     after_filter :store_location
     
@@ -15,14 +15,12 @@ class UsersController < ApplicationController
     def show
         if @user.pocket
             # Currently only getting 2 weeks worth of articles, prevents heavy users of pocket slowing down load.
-            @articles = user_articles(@user, "all", (Time.now - 2.weeks))
-            if @user != current_user
-                if current_user
-                    @current_user_articles = user_articles(current_user, "all")
-                    @current_user_article_urls = Array.new
-                    @current_user_articles.each do |id, article|
-                        @current_user_article_urls << article["resolved_url"]
-                    end
+            @articles = user_articles(@user, "all", (Time.now - 1.weeks))
+            if @user != current_user and current_user.pocket
+                @current_user_articles = user_articles(current_user, "all")
+                @current_user_article_urls = Array.new
+                @current_user_articles.each do |id, article|
+                    @current_user_article_urls << article["resolved_url"]
                 end
             end
         end
@@ -69,12 +67,12 @@ class UsersController < ApplicationController
     end
     
     def subscribe
-        if !user_signed_in?
-            redirect_to new_user_registration_path, notice: "Hey new user, you've got to sign up before we can let you see what's in people's pockets."
-        else
+        # if !user_signed_in?
+        #     redirect_to new_user_registration_path, notice: "Hey new user, you've got to sign up before we can let you see what's in people's pockets."
+        # else
             current_user.subscribe!(User.find(params[:subscribe_to_user]))
             redirect_to User.find(params[:subscribe_to_user])
-        end
+        # end
     end
     
     def unsubscribe
