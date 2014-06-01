@@ -70,3 +70,5 @@ group :test do
 end
 
 gem 'devise', '3.2.4'
+
+gem 'jquery_mobile_rails'
