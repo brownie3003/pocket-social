@@ -18,10 +18,6 @@ class UsersController < ApplicationController
             @articles = user_articles(@user, "all", (Time.now - 1.weeks))
             if @user != current_user and current_user.pocket
                 @current_user_articles = user_articles(current_user, "all")
-                @current_user_article_urls = Array.new
-                @current_user_articles.each do |id, article|
-                    @current_user_article_urls << article["resolved_url"]
-                end
             end
         end
     end

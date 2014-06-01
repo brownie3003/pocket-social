@@ -1,42 +1,47 @@
-= render "partials/profileBox"
-
-.col-xs-9.articles
-    - if current_user == @user
-        h2 My pocket articles
-    - else
-        h2 
-            = "#{@user.username}'s articles"
+.user-details
+    h1 = @user.username
+    p 
+        | Subscribers: 
+        = @user.subscribers.count
+    p    
+        | Subscriptions: 
+        = @user.subscriptions.count
 
     / @user has linked pocket account
     - if @articles
 
-        / If someone is singed in AND the current_user is subscribed to this user AND they have associated their pocket we show them articles
-        / The Triumvitae to getting into the pocket club
-        - if current_user and current_user.subscriptions.include? @user and current_user.pocket
-            
-            - @articles.each do |id, article|
-                .row.pocket_row
-                    .col-xs-8
-                        = link_to "#{article["resolved_title"]}", article["resolved_url"]
-                        p = article["excerpt"]
-                    .col-xs-4
-                        - if @current_user_article_urls.include? article["resolved_url"]
-                            p Already in your pocket
-                        - else
-                            = form_for current_user, :url => {action: 'add_article'} do |f|
-                                = hidden_field_tag :user, @user.id
-                                = hidden_field_tag :article, article["resolved_url"]
-                                = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
-        / The next logical case is that the user is looking at their own profile/show page
-        - elsif @user == current_user
-            - @articles.each do |id, article|
-                .row.pocket_row
-                    .col-xs-12
-                        = link_to "#{article["resolved_title"]}", article["resolved_url"], target: "_blank"
-                        p = article["excerpt"]
-        - else
-            p Subscribe to see this users articles
+        - @articles.each do |id, article|
+
+            - @already_in_pocket = false
+            - @current_user_articles.each do |users_article_id, users_article_hash|
+                - if users_article_hash["resolved_id"] == article["resolved_id"]
+                    - @already_in_pocket = true
+            .row
+                .col-xs-12
+                    = link_to "#{article["resolved_title"]}", article["resolved_url"], target: '_blank'
+                    p = article["excerpt"]
+            .row.article-details
+                .col-xs-3
+                .col-xs-6
+                    small 
+                        = time_ago_in_words(Time.at(article["time_updated"].to_i).to_datetime)
+                        |  ago
+                .col-xs-3
+                    - if @already_in_pocket
+                        p Already in your pocket
+                    - else
+                        = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
+                            = hidden_field_tag :user, @user.id
+                            = hidden_field_tag :article, article["resolved_url"]
+                            = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
         
     / @user has not linked pocket
     - else
         p Sorry pocket has not been linked to this account.
+
+.user-footer data-role="footer"
+    - if current_user != @user
+        - if current_user.subscriptions.include? @user 
+            = render 'unsubscribe_form', user: current_user
+        - elsif !@user.pocket.nil?
+            = render 'subscribe_form', user: current_user

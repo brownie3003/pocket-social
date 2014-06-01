@@ -1,0 +1,9 @@
+h2 = link_to "#{current_user.username}", root_path
+p 
+    | Subscribers: 
+    = @user.subscribers.count
+p    
+    | Subscriptions: 
+    = @user.subscriptions.count
+
+= link_to 'Logout', sign_out_path
