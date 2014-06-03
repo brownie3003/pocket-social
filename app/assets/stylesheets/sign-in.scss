@@ -1,0 +1,99 @@
+@import url(http://fonts.googleapis.com/css?family=Open+Sans:300,400);
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    
+    flex-direaction: column;
+    justify-content: center;
+    align-items: center;
+    
+    margin: 0;
+    min-height: 100vh;
+    font-family: "Open Sans";
+}
+
+#signin {
+    padding: 1em;
+    margin: 1em;
+    border: 2px solid #3498DB;
+    text-align: center;
+    color: rgba(0,0,0,0.75);
+
+    .row {
+        height: 42px;
+        margin-top: -14px;
+        border-radius: 14px 14px 0px 0px;
+        margin-bottom: 20px;
+
+        .left {
+            background-color: #3498DB;
+            left: 1px;
+        }
+
+        .right {
+            background-color: white;
+            right: 1px
+        }
+
+        a {
+            font-size: 2em;
+            color: white
+        }
+        a:active {
+            font-size: 2em;
+            color: black;
+        }
+    }
+    
+    h1, button {
+        font-weight: 300;
+        text-transform: uppercase;
+    }
+    
+    .error {
+        background: rgba(255, 0, 0, 0.4);
+        color: white;
+        text-shadow:  0 1px 0 rgba(255, 100, 100, 0.75);
+        
+        margin-left: -1em;
+        margin-right: -1em;
+        margin-bottom: 1ex;
+        
+        padding: 1ex;
+        
+        border-top: 1px solid rgba(255, 100, 100, 0.75);
+        border-bottom: 1px solid rgba(255, 100, 100, 0.75);
+    }
+    
+    input, button {
+        display: block;
+        width: 100%;
+        
+        text-align: center;
+        font-size: 1.1em;
+        padding: 1ex;
+        border: 2px solid #ECF0F1;
+        transition: border ease 500ms;
+        font-family: "Open Sans";
+        background: #ECF0F1;
+        color: #181818;
+        
+        &:focus {
+            outline: none;
+            border: 2px solid #3498DB;
+        }
+        
+        &:not(:last-child) {
+            margin-bottom: 1ex;
+        }
+    }
+    button {
+        color: white;
+        border: 2px solid #3498DB;
+        background: #3498DB;
+    }
+}
