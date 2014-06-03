@@ -1,9 +1,14 @@
-h2 = link_to "#{current_user.username}", root_path
-p 
-    | Subscribers: 
-    = @user.subscribers.count
-p    
-    | Subscriptions: 
-    = @user.subscriptions.count
-
-= link_to 'Logout', sign_out_path
+#menu
+    .pure-menu.pure-menu-open
+        = link_to "#{current_user.username}", root_path, class: "pure-menu-heading"
+        ul
+            li
+                a
+                    | Subscribers: 
+                    = @user.subscribers.count
+            li
+                a    
+                    | Subscriptions: 
+                    = @user.subscriptions.count
+            li
+                = link_to 'Logout', sign_out_path

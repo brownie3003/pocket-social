@@ -4,19 +4,17 @@ html
         title My App
         meta name="viewport" content="width=device-width, initial-scale=1.0"
         = stylesheet_link_tag    "application", :media => "all"
-        = javascript_include_tag "application"
         = csrf_meta_tags
-        / link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.css"
-        / script src="http://code.jquery.com/mobile/1.4.2/jquery.mobile-1.4.2.min.js"
  
     body
+        #layout
 
-    div data-role="page"
-        = render "partials/header"
+            = render "partials/header"
 
-        .ui-content role="main"
-            .container
+            .container#main
                 = yield
 
 
-            = debug(params) if Rails.env.development?
+                = debug(params) if Rails.env.development?
+        
+        = javascript_include_tag "application"

@@ -16,7 +16,8 @@ module UsersHelper
                 detailType:"complete",
                 sort: "newest",
                 since: time,
-                state: state 
+                state: state,
+                count: 50
             }.to_json
         })["list"]
         

@@ -1,8 +1,8 @@
 - if user_signed_in?
-    div#main-menu data-role="panel" data-position="right" data-display="push"
-        =  render "partials/main_menu"
+    =  render "partials/main_menu"
 
-div data-role="header" data-postion="fixed"
-    h1 Pocket Social
-    - if user_signed_in?
-        a href="#main-menu" class="ui-btn ui-icon-bars ui-btn-icon-notext ui-corner-all ui-btn-right"
+/ .navbar.navbar-default.navbar-fixed-top
+/     a.navbar-brand Pocket Social
+- if user_signed_in?
+    a#menuLink.menu-link href="#menu"
+        span
