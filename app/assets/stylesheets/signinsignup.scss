@@ -6,7 +6,7 @@
 
 body {
     display: flex;
-    
+    background-color: whitesmoke;
     flex-direaction: column;
     justify-content: center;
     align-items: center;
@@ -16,36 +16,37 @@ body {
     font-family: "Open Sans";
 }
 
-#signin {
+#signinsignup {
     padding: 1em;
     margin: 1em;
-    border: 2px solid #3498DB;
     text-align: center;
     color: rgba(0,0,0,0.75);
+    background-color: white;
 
     .row {
         height: 42px;
         margin-top: -14px;
-        border-radius: 14px 14px 0px 0px;
         margin-bottom: 20px;
-
-        .left {
-            background-color: #3498DB;
-            left: 1px;
-        }
-
-        .right {
-            background-color: white;
-            right: 1px
-        }
+        font-size: 2em;
+        cursor: pointer;
 
         a {
-            font-size: 2em;
-            color: white
+            color: white;
         }
-        a:active {
-            font-size: 2em;
-            color: black;
+
+        .signin {
+            background-color: #3498DB;
+        }
+
+        .signup {
+            background-color: #3498DB;
+        }
+
+        .active {
+            background-color: white;
+            a {
+                color: #3498DB;
+            }
         }
     }
     
