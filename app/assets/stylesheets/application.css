@@ -11,6 +11,6 @@
  *= require_self
  *= require purecss
  *= require side-menu
- *= signinsignup
+ *= require signinsignup
  *= require_tree .
  */
