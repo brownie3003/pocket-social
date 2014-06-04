@@ -16,13 +16,12 @@ body {
 }
 
 #signinsignup {
-    padding: 1em;
     margin: 1em;
     text-align: center;
     color: rgba(0,0,0,0.75);
     background-color: white;
 
-    .row {
+    .tabs {
         height: 42px;
         margin-top: -14px;
         margin-bottom: 20px;
@@ -35,10 +34,14 @@ body {
 
         .signin {
             background-color: #3498DB;
+            width: 50%;
+            display: inline-block;
         }
 
         .signup {
             background-color: #3498DB;
+            width: 50%;
+            display: inline-block;
         }
 
         .active {
@@ -47,6 +50,10 @@ body {
                 color: #3498DB;
             }
         }
+    }
+
+    .forms {
+        padding: 1em;
     }
     
     h1, button {
