@@ -5,29 +5,29 @@
             span
             
             =render "partials/main_menu"
-            .content
-                - if @user.subscriptions.empty?
-                    p 
-                    = link_to "Subscribe to some users to see what they are reading", users_path
-                - else
-                    - if @article_feed
-                        - @article_feed.each do |id, article|
-                            .row
-                                .col-xs-12
-                                    = link_to "#{article["resolved_title"]}", article["resolved_url"], target: '_blank'
-                                    p = article["excerpt"]
-                            .row.article-details
-                                .col-xs-3
-                                    p = link_to "#{article[:being_read_by][0]}", user_path(User.find_by(username: article[:being_read_by][0]))
-                                .col-xs-6
-                                    p 
-                                        = time_ago_in_words(Time.at(article["time_updated"].to_i).to_datetime)
-                                        |  ago
-                                .col-xs-3
-                                    = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
-                                        = hidden_field_tag :user, @user.id
-                                        = hidden_field_tag :article, article["resolved_url"]
-                                        = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
-                                            .mini-button
+            #main
+                .content
+                    - if @user.subscriptions.empty?
+                        p 
+                        = link_to "Subscribe to some users to see what they are reading", users_path
+                    - else
+                        - if @article_feed
+                            - @article_feed.each do |id, article|
+                                .row
+                                    .col-xs-12
+                                        = link_to "#{article["resolved_title"]}", article["resolved_url"], target: '_blank'
+                                        p = article["excerpt"]
+                                .row.article-details
+                                    .col-xs-3
+                                        p = link_to "#{article[:being_read_by][0]}", user_path(User.find_by(username: article[:being_read_by][0]))
+                                    .col-xs-6
+                                        p 
+                                            = time_ago_in_words(Time.at(article["time_updated"].to_i).to_datetime)
+                                            |  ago
+                                    .col-xs-3
+                                        = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
+                                            = hidden_field_tag :user, @user.id
+                                            = hidden_field_tag :article, article["resolved_url"]
+                                            = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
 - else
     = render "signinsignup"
