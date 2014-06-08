@@ -210,4 +210,29 @@ small screens.
 /*
 Hides the menu at `48em`, but modify this based on your app's needs.
 */
+@media (min-width: 48em) {
 
+    .header,
+    .content {
+        padding-left: 2em;
+        padding-right: 2em;
+    }
+
+    #layout {
+        padding-right: 150px; /* left col width "#menu" */
+        left: 0;
+    }
+    #menu {
+        right: 150px;
+    }
+
+    .menu-link {
+        position: fixed;
+        right: 150px;
+        display: none;
+    }
+
+    #layout.active .menu-link {
+        right: 150px;
+    }
+}
