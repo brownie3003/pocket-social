@@ -1,4 +1,4 @@
-window.onload = (function (window, document){
+$(function () {
 
     var toggleBox = function () {
         $('#signup').toggle();
@@ -14,4 +14,4 @@ window.onload = (function (window, document){
     $('.signin').click(function() {
         toggleBox();
     });
-}(this, this.document));;
+});
