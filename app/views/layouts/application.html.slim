@@ -7,14 +7,12 @@ html
         = csrf_meta_tags
  
     body
-        #layout
 
+        .container
             = render "partials/header"
-
-            .container#main
-                = yield
+            = yield
 
 
-                = debug(params) if Rails.env.development?
+            = debug(params) if Rails.env.development?
         
         = javascript_include_tag "application"

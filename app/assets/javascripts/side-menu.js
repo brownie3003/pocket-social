@@ -23,13 +23,16 @@ window.onload = (function (window, document) {
         element.className = classes.join(' ');
     }
 
-    menuLink.onclick = function (e) {
-        var active = 'active';
+    // Check we are on a page that includes the menu link (signed-in)
+    if (menuLink) {
+        menuLink.onclick = function (e) {
+            var active = 'active';
 
-        e.preventDefault();
-        toggleClass(layout, active);
-        toggleClass(menu, active);
-        toggleClass(menuLink, active);
-    };
+            e.preventDefault();
+            toggleClass(layout, active);
+            toggleClass(menu, active);
+            toggleClass(menuLink, active);
+        };
+    }
 
 }(this, this.document));

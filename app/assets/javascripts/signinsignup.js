@@ -1,17 +1,20 @@
 $(function () {
+    var toggleForm = function (element) {
+        // Clear active tab and form
+        $('.signin, .signup').removeClass('active');
+        $('#signin, #signup').hide();
 
-    var toggleBox = function () {
-        $('#signup').toggle();
-        $('#signin').toggle();
-        $('.signup').toggleClass('active');
-        $('.signin').toggleClass('active');
+        // Set signin or signup click
+        var clicked = $(element).attr("class"),
+            tab = "." + clicked,
+            form = "#" + clicked;
+
+        // make tab and form active
+        $(tab).addClass('active');
+        $(form).slideDown();
     }
 
-    $('.signup').click(function() {
-        toggleBox();
-    });
-
-    $('.signin').click(function() {
-        toggleBox();
+    $('.signup, .signin').click(function() {
+        toggleForm(this);
     });
 });
