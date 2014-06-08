@@ -28,5 +28,6 @@
                                         = hidden_field_tag :user, @user.id
                                         = hidden_field_tag :article, article["resolved_url"]
                                         = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
+                                            .mini-button
 - else
     = render "signinsignup"
