@@ -12,8 +12,8 @@
 //
 //= require jquery
 //= require jquery_ujs
-//= signinsignup
 //= side-menu
+//= signinsignup
 //= require turbolinks
 //= require bootstrap
 //= require_tree .
