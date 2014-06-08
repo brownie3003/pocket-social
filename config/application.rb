@@ -28,6 +28,9 @@ module PocketSocial
 
         config.action_mailer.default_url_options = { host: 'pocket-social.herokuapp.com' }
         
+        # Load in libs directory
+        config.autoload_paths += %W(#{config.root}/lib)
+
         config.generators do |g|
             g.test_framework :rspec
         end
