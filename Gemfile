@@ -70,5 +70,6 @@ group :test do
 end
 
 gem 'devise'
+gem 'omniauth-twitter'
 
 gem 'purecss-rails'

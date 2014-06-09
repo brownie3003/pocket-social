@@ -58,7 +58,12 @@ module UsersHelper
     
 
     def article_feed(user)
-        user_articles = user_articles(user, 'all')
+        # If the user has a pocket account associated we get their articles
+        if user.pocket
+            user_articles = user_articles(user, 'all')
+        else
+            user_articles = {}
+        end
         subscription_articles = subscription_articles(user)
         prune_articles(user_articles, subscription_articles)
     end

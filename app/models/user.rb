@@ -5,12 +5,16 @@ class User
     # Include default devise modules. Others available are:
     # :confirmable, :lockable, :timeoutable and :omniauthable
     devise :database_authenticatable, :registerable,
-         :recoverable, :rememberable, :trackable, :validatable
+         :recoverable, :rememberable, :trackable, :validatable, :omniauthable
 
     ## Database authenticatable
     field :username,           type: String, default: ""
     field :email,              type: String, default: ""
     field :encrypted_password, type: String, default: ""
+
+    ## Omniauthable
+    field :provider, type: String, default: ""
+    field :uid,      type: String, default: ""
 
     ## Recoverable
     field :reset_password_token,   type: String
@@ -37,10 +41,8 @@ class User
     # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
     # field :locked_at,       type: Time
 
-    before_save { self.username = username.downcase }
-    before_save { self.email = email.downcase }
-
-    validates_presence_of :username, on: :create, message: "can't be blank"
+    validates_presence_of :username, message: "can't be blank"
+    validates_uniqueness_of :username, message: "already taken"
 
     
     # Must use username as ID because .com of email doesn't work for routes
@@ -50,6 +52,29 @@ class User
     
     has_and_belongs_to_many :subscriptions, class_name: 'User', inverse_of: :subscribers, autosave: true
     has_and_belongs_to_many :subscribers, class_name: 'User', inverse_of: :subscriptions
+
+    def self.from_omniauth(auth)
+        where(auth.slice(:provider, :uid)).first_or_create do |user|
+            user.provider = auth.provider
+            user.uid = auth.uid
+            user.username = auth.info.nickname
+        end
+    end 
+
+    # Model fails to save from omniauth because email and username are not present
+    def self.new_with_session(params, session)
+        if session["devise.user_attributes"]
+            new(session["devise.user_attributes"]) do |user|
+                puts "User attributes: #{user.attributes}"
+                user.attributes = params
+                user.valid?
+            end
+        else
+            puts "fall back to super"
+            # No session? -> Fall back to registering a user the normal way with devise
+            super
+        end
+    end
 
     def subscribe!(user)
         if self.id != user.id && !self.subscriptions.include?(user)
@@ -64,9 +89,14 @@ class User
     
     def self.search(search)
         if search
-            where(email: /#{Regexp.escape(search)}/i)
+            where(username: /#{Regexp.escape(search)}/i)
         else
             all
         end
+    end
+
+    # Don't require a password with devise if we are using a provider (twitter)
+    def password_required?
+        super && provider.blank?
     end
 end

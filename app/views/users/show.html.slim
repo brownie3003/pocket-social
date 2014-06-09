@@ -13,9 +13,10 @@
         - @articles.each do |id, article|
 
             - @already_in_pocket = false
-            - @current_user_articles.each do |users_article_id, users_article_hash|
-                - if users_article_hash["resolved_id"] == article["resolved_id"]
-                    - @already_in_pocket = true
+            - if @current_user_articles
+                - @current_user_articles.each do |users_article_id, users_article_hash|
+                    - if users_article_hash["resolved_id"] == article["resolved_id"]
+                        - @already_in_pocket = true
             .row
                 .col-xs-12
                     = link_to "#{article["resolved_title"]}", article["resolved_url"], target: '_blank'

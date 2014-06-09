@@ -10,5 +10,13 @@
                 a    
                     | Subscriptions: 
                     = @user.subscriptions.count
+            - if @user.uid.blank?
+                li
+                    = link_to "Add Twitter", user_omniauth_authorize_path(:twitter)
             li
                 = link_to 'Logout', destroy_user_session_path, method: :delete
+
+            = form_tag users_path, method: 'get' do
+                p
+                    = text_field_tag :search, params[:search], placeholder: "Search by Email"
+                    = submit_tag "Search", name: nil

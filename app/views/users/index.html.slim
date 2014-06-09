@@ -2,7 +2,7 @@ h1 Users
 
 = form_tag users_path, method: 'get' do
     p
-        = text_field_tag :search, params[:search], placeholder: "Search by Email"
+        = text_field_tag :search, params[:search], placeholder: "Search for Users"
         = submit_tag "Search", name: nil
 
 
