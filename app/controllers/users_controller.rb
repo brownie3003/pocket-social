@@ -67,13 +67,13 @@ class UsersController < ApplicationController
         #     redirect_to new_user_registration_path, notice: "Hey new user, you've got to sign up before we can let you see what's in people's pockets."
         # else
             current_user.subscribe!(User.find(params[:subscribe_to_user]))
-            redirect_to User.find(params[:subscribe_to_user])
+            redirect_to root_path
         # end
     end
     
     def unsubscribe
         current_user.unsubscribe!(User.find(params[:unsubscribe_to_user]))
-        redirect_to User.find(params[:unsubscribe_to_user])
+        redirect_to root_path
     end
     
     def add_article

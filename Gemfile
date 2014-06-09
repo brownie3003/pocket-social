@@ -69,6 +69,6 @@ group :test do
     gem 'capybara'
 end
 
-gem 'devise', '3.2.4'
+gem 'devise'
 
 gem 'purecss-rails'

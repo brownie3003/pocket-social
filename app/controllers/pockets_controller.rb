@@ -13,14 +13,9 @@ class PocketsController < ApplicationController
     end
         
     # POST /pockets
-    # POST /pockets.json
     def create
         response = create_pocket
-        
-        puts response
 
-        
-        puts "test #{response["access_token"]}, username: #{response["username"]}"
         current_user.create_pocket(access_token: response["access_token"], username: response["username"])
         
         redirect_to current_user, notice: "Pocket was successfully linked to your account."

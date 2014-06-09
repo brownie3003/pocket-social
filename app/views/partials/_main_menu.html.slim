@@ -11,4 +11,4 @@
                     | Subscriptions: 
                     = @user.subscriptions.count
             li
-                = link_to 'Logout', sign_out_path
+                = link_to 'Logout', destroy_user_session_path, method: :delete

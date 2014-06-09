@@ -29,5 +29,8 @@
                                             = hidden_field_tag :user, @user.id
                                             = hidden_field_tag :article, article["resolved_url"]
                                             = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
+    - if current_user.pocket.nil?
+        .user-footer data-role="footer"
+            = link_to "Link your Pocket account", new_pocket_path, class: "btn btn-large btn-primary", type: "button"
 - else
     = render "signinsignup"

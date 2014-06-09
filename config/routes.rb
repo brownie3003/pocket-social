@@ -4,11 +4,6 @@ PocketSocial::Application.routes.draw do
     resources :users
     resources :pockets, only: [:new, :create, :destroy]
 
-    devise_scope :user do
-        get "sign_in", to: "devise/sessions#new"
-        get "sign_out", to: "devise/sessions#destroy"
-    end
-
     match '/pocket_auth', to: 'pockets#pocket_auth',   via: 'get'
     match '/subscribe', to: 'users#subscribe', via: 'patch'
     match '/unsubscribe', to: 'users#unsubscribe', via: 'patch'
