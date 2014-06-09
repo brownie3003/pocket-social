@@ -1,3 +1,3 @@
 = form_for user, :url => {action: 'unsubscribe'} do |f|
-    = hidden_field_tag :unsubscribe_to_user, @user.id
+    = hidden_field_tag :unsubscribe_to_user, user.id
     = f.submit "Unsubscribe", class: "btn btn-large btn-danger subscribe-btn"
