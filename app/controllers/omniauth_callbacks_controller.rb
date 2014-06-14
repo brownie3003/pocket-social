@@ -1,14 +1,17 @@
 class OmniauthCallbacksController < Devise::OmniauthCallbacksController
     def all
+        # raise request.env["omniauth.auth"].to_json
         # Search DB with provider: "twitter" and the uid from twitter
         omniauth_hash = request.env["omniauth.auth"]
         user = User.from_omniauth(omniauth_hash)
+        puts "HELLO #{omniauth_hash.credentials.token}"
         # If user is already signed in, therefore associating their account with twitter
         if user_signed_in?
             current_user.update_attributes(
                 provider: omniauth_hash["provider"],
                 uid: omniauth_hash["uid"]
             )
+
             redirect_to root_path
         # If we find the user in the DB
         elsif user.persisted?

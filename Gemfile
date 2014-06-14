@@ -71,5 +71,6 @@ end
 
 gem 'devise'
 gem 'omniauth-twitter'
+gem 'twitter'
 
 gem 'purecss-rails'

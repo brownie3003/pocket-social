@@ -20,6 +20,7 @@ body {
     text-align: center;
     color: rgba(0,0,0,0.75);
     background-color: white;
+    min-width: 30%;
 
     .tabs {
         height: 42px;
@@ -102,5 +103,11 @@ body {
         color: white;
         border: 2px solid #3498DB;
         background: #3498DB;
+    }
+}
+
+@media (max-width: 48em) {
+    #signinsignup {
+        min-width: 80%;
     }
 }

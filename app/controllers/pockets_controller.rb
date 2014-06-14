@@ -18,7 +18,7 @@ class PocketsController < ApplicationController
 
         current_user.create_pocket(access_token: response["access_token"], username: response["username"])
         
-        redirect_to current_user, notice: "Pocket was successfully linked to your account."
+        redirect_to root_url, notice: "Pocket was successfully linked to your account."
     end
 
     # PATCH/PUT /pockets/1
