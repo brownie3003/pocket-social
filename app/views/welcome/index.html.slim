@@ -7,6 +7,7 @@
             =render "partials/main_menu"
             #main
                 .content
+                    = @twitter_following
                     - if @user.subscriptions.empty?
                         p 
                         = link_to "Subscribe to some users to see what they are reading", users_path

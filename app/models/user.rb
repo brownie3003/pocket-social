@@ -63,17 +63,15 @@ class User
         end
     end 
 
-    # Model fails to save from omniauth because email and username are not present
+    # Model fails to save from omniauth because email is not present
     def self.new_with_session(params, session)
         if session["devise.user_attributes"]
             new(session["devise.user_attributes"]) do |user|
                 puts "User attributes: #{user.attributes}"
                 user.attributes = params
                 user.valid?
-                puts twitter_following
             end
         else
-            puts "fall back to super"
             # No session? -> Fall back to registering a user the normal way with devise
             super
         end
