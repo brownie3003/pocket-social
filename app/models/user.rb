@@ -12,6 +12,8 @@ class User
     field :email,              type: String, default: ""
     field :encrypted_password, type: String, default: ""
     field :twitter_following,  type: Array, default: []
+    field :bio,                type: String, default: ""
+    field :image,              type: String, default: ""
     field :new_user?,          type: Boolean, default: true
 
     ## Omniauthable
@@ -61,6 +63,8 @@ class User
             user.provider = auth.provider
             user.uid = auth.uid
             user.username = auth.info.nickname
+            user.bio = auth.info.description
+            user.image = auth.info.image
         end
     end 
 

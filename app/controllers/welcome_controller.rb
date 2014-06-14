@@ -18,6 +18,6 @@ class WelcomeController < ApplicationController
                 @twitter_following << User.find_by(uid: uid)
             end
         end
-        # current_user.update_attributes(new_user?: false)
+        current_user.update_attributes(new_user?: false)
     end
 end

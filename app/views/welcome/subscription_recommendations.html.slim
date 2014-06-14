@@ -1,10 +1,17 @@
 h3 User Recommendations
 span Click on a few people to subscribe to them.
-.container
+.container style="text-align: center"
     .row
         - @twitter_following.each do |user|
-            .col-xs-6 style="text-align: center"
-                = user.username
+            .col-xs-6
+                h4 = user.username
+                span = user.bio
+                p
+                    | Subscriptions: 
+                    = user.subscriptions.count 
+                p 
+                    | Subscribers: 
+                    = user.subscribers.count
                 - if current_user.subscriptions.include? user
                     = render 'partials/unsubscribe_form', user: user
                 - else
