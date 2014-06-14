@@ -5,12 +5,12 @@
             li
                 a
                     | Subscribers: 
-                    = @user.subscribers.count
+                    = current_user.subscribers.count
             li
                 a    
                     | Subscriptions: 
-                    = @user.subscriptions.count
-            - if @user.uid.blank?
+                    = current_user.subscriptions.count
+            - if current_user.uid.blank?
                 li
                     = link_to "Add Twitter", user_omniauth_authorize_path(:twitter)
             li

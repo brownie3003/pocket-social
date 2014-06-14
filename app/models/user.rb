@@ -106,8 +106,10 @@ class User
             self.subscriptions << user
             user.subscribers << self
             # If this is someone we would recommend they follow
-            self.twitter_following.delete(user.uid.to_i)
-            self.save
+            if self.twitter_following.include?(user.uid.to_i)
+                self.twitter_following.delete(user.uid.to_i)
+                self.save
+            end
         end
     end
 
