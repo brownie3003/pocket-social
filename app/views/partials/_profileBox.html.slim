@@ -13,6 +13,6 @@
 
     - if current_user != @user
         - if current_user.subscriptions.include? @user 
-            = render 'unsubscribe_form', user: current_user
+            = render 'partials/unsubscirbe_form', user: current_user
         - elsif !@user.pocket.nil?
-            = render 'subscribe_form', user: current_user
+            = render 'partials/subscribe_form', user: current_user

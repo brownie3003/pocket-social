@@ -8,6 +8,7 @@ PocketSocial::Application.routes.draw do
     match '/subscribe', to: 'users#subscribe', via: 'patch'
     match '/unsubscribe', to: 'users#unsubscribe', via: 'patch'
     match '/add_article', to: 'users#add_article', via: 'patch'
+    match '/subscription_recommendations', to: 'welcome#subscription_recommendations', via: 'get'
 
     # The priority is based upon order of creation: first created -> highest priority.
     # See how all your routes lay out with "rake routes".

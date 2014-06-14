@@ -1,3 +1,3 @@
-= form_for user, :url => {action: 'subscribe'} do |f|
+= form_for user, :url => {action: 'subscribe', controller: 'users'} do |f|
     = hidden_field_tag :subscribe_to_user, user.id
     = f.submit "Subscribe", class: "btn btn-large btn-primary subscribe-btn"

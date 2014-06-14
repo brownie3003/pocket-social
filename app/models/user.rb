@@ -12,6 +12,7 @@ class User
     field :email,              type: String, default: ""
     field :encrypted_password, type: String, default: ""
     field :twitter_following,  type: Array, default: []
+    field :new_user?,          type: Boolean, default: true
 
     ## Omniauthable
     field :provider, type: String, default: ""
@@ -49,7 +50,7 @@ class User
     
     # Must use username as ID because .com of email doesn't work for routes
     field :_id, type: String, default: ->{ username }
-    
+
     embeds_one :pocket
     
     has_and_belongs_to_many :subscriptions, class_name: 'User', inverse_of: :subscribers, autosave: true
@@ -66,9 +67,28 @@ class User
     # Model fails to save from omniauth because email is not present
     def self.new_with_session(params, session)
         if session["devise.user_attributes"]
+            client = Twitter::REST::Client.new do |config|
+                config.consumer_key        = ENV['TWITTER_KEY']
+                config.consumer_secret     = ENV['TWITTER_SECRET']
+                config.access_token        = session["twitter_token"]
+                config.access_token_secret = session["twitter_secret"]
+            end
+
+            following = client.friend_ids.to_set
+
+            users_list = Set.new
+            User.all.each do |user|
+                if user.pocket
+                    users_list << user.uid.to_i
+                end
+            end
+
+            twitter_following = (users_list&(following)).to_a
+
             new(session["devise.user_attributes"]) do |user|
                 puts "User attributes: #{user.attributes}"
                 user.attributes = params
+                user.update_attributes(twitter_following: twitter_following)
                 user.valid?
             end
         else
@@ -81,6 +101,9 @@ class User
         if self.id != user.id && !self.subscriptions.include?(user)
             self.subscriptions << user
             user.subscribers << self
+            # If this is someone we would recommend they follow
+            self.twitter_following.delete(user.uid.to_i)
+            self.save
         end
     end
 

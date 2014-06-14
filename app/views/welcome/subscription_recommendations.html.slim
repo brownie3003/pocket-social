@@ -1,0 +1,13 @@
+h3 User Recommendations
+span Click on a few people to subscribe to them.
+.container
+    .row
+        - @twitter_following.each do |user|
+            .col-xs-6 style="text-align: center"
+                = user.username
+                - if current_user.subscriptions.include? user
+                    = render 'partials/unsubscribe_form', user: user
+                - else
+                    = render 'partials/subscribe_form', user: user
+
+    = link_to "Next Step", root_path, class: "btn btn-primary btn-large"
