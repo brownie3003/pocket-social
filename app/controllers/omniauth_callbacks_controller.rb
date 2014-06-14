@@ -4,7 +4,6 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         # Search DB with provider: "twitter" and the uid from twitter
         omniauth_hash = request.env["omniauth.auth"]
         user = User.from_omniauth(omniauth_hash)
-        puts "HELLO #{omniauth_hash.credentials.token}"
         # If user is already signed in, therefore associating their account with twitter
         if user_signed_in?
             current_user.update_attributes(
@@ -20,7 +19,9 @@ class OmniauthCallbacksController < Devise::OmniauthCallbacksController
         # Else create a new user passing in the info we can get from the omniauth callback (e.g. Nickname from twitter)
         else
             session["devise.user_attributes"] = user.attributes
-            puts session["devise.user_attributes"]
+            session["twitter_token"] = omniauth_hash.credentials.token
+            session["twitter_secret"] = omniauth_hash.credentials.secret
+            # puts session["devise.user_attributes"]
             redirect_to new_user_registration_url
         end
     end

@@ -11,6 +11,7 @@ class User
     field :username,           type: String, default: ""
     field :email,              type: String, default: ""
     field :encrypted_password, type: String, default: ""
+    field :twitter_following,  type: Array, default: []
 
     ## Omniauthable
     field :provider, type: String, default: ""
@@ -41,8 +42,9 @@ class User
     # field :unlock_token,    type: String # Only if unlock strategy is :email or :both
     # field :locked_at,       type: Time
 
-    validates_presence_of :username, message: "can't be blank"
-    validates_uniqueness_of :username, message: "already taken"
+    # Removing normal sign up and username
+    # validates_presence_of :username, message: "can't be blank"
+    # validates_uniqueness_of :username, message: "already taken"
 
     
     # Must use username as ID because .com of email doesn't work for routes
@@ -68,6 +70,7 @@ class User
                 puts "User attributes: #{user.attributes}"
                 user.attributes = params
                 user.valid?
+                puts twitter_following
             end
         else
             puts "fall back to super"
