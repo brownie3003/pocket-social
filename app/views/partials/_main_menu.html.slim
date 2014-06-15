@@ -10,6 +10,8 @@
                 a    
                     | Subscriptions: 
                     = current_user.subscriptions.count
+            li
+                = link_to "Recommendations", recommendations_path
             - if current_user.uid.blank?
                 li
                     = link_to "Add Twitter", user_omniauth_authorize_path(:twitter)

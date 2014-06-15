@@ -1,0 +1,24 @@
+h1 style="text-align: center;" Personalised Recommendations
+
+- if @article_feed
+    - @article_feed.each do |id, article|
+        .row
+            .col-xs-12
+                = link_to "#{article["resolved_title"]}", article["resolved_url"], target: '_blank'
+                p = article["excerpt"]
+        .row.article-details
+            .col-xs-3
+                - article_readers = article[:being_read_by].join(", ")
+                p = link_to "#{article_readers}", user_path(User.find_by(username: article[:being_read_by][0]))
+            .col-xs-6
+                p 
+                    = time_ago_in_words(Time.at(article["time_updated"].to_i).to_datetime)
+                    |  ago
+            .col-xs-3
+                - if current_user.pocket?
+                    = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
+                        = hidden_field_tag :user, current_user.id
+                        = hidden_field_tag :article, article["resolved_url"]
+                        = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
+                - else
+                    = link_to "Pocket +", new_pocket_path, class: "btn btn-primary", type: "button"

@@ -81,6 +81,10 @@ class UsersController < ApplicationController
             head :no_content
         end
     end
+
+    def recommendations
+        @article_feed = order_by_popularity(article_feed(current_user))    
+    end
     
     def add_article
         add_article_helper params[:article], current_user.pocket.access_token

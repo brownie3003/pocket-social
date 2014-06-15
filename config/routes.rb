@@ -5,6 +5,7 @@ PocketSocial::Application.routes.draw do
     resources :pockets, only: [:new, :create, :destroy]
 
     match '/pocket_auth', to: 'pockets#pocket_auth',   via: 'get'
+    match '/recommendations', to: 'users#recommendations', via: 'get'
     match '/subscribe', to: 'users#subscribe', via: 'patch'
     match '/unsubscribe', to: 'users#unsubscribe', via: 'patch'
     match '/add_article', to: 'users#add_article', via: 'patch'
