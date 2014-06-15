@@ -15,7 +15,9 @@ class WelcomeController < ApplicationController
         if @user.new_user?
             @twitter_following = []
             @user.twitter_following.each do |uid|
-                @twitter_following << User.find_by(uid: uid)
+                if User.find_by(uid: uid).pocket
+                    @twitter_following << User.find_by(uid: uid)
+                end
             end
             
             # If they don't have any recommendations from Twitter
