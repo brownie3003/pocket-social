@@ -30,12 +30,14 @@
                 .col-xs-3
                     - if @already_in_pocket
                         p Already in your pocket
-                    - else
+                    - elsif current_user.pocket?
                         = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
                             = hidden_field_tag :user, @user.id
                             = hidden_field_tag :article, article["resolved_url"]
                             = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
-        
+                    - else
+                        = link_to "Pocket +", new_pocket_path, class: "btn btn-large btn-primary", type: "button"
+            hr
     / @user has not linked pocket
     - else
         p Sorry pocket has not been linked to this account.

@@ -13,13 +13,13 @@
                         = time_ago_in_words(Time.at(article["time_updated"].to_i).to_datetime)
                         |  ago
                 .col-xs-3
-                    - if @user.pocket?
+                    - if current_user.pocket?
                         = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
                             = hidden_field_tag :user, @user.id
                             = hidden_field_tag :article, article["resolved_url"]
                             = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
                     - else
-                        = link_to "Add to your Pocket", new_pocket_path, class: "btn btn-large btn-primary", type: "button"
+                        = link_to "Pocket +", new_pocket_path, class: "btn btn-large btn-primary", type: "button"
             hr
 - else
     = render "signinsignup"

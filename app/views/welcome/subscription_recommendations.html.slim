@@ -2,19 +2,35 @@ h3 User Recommendations
 span Click on a few people to subscribe to them.
 .container style="text-align: center"
     .row
-        - @twitter_following.each do |user|
-            .col-xs-6
-                h4 = user.username
-                span = user.bio
-                p
-                    | Subscriptions: 
-                    = user.subscriptions.count 
-                p 
-                    | Subscribers: 
-                    = user.subscribers.count
-                - if current_user.subscriptions.include? user
-                    = render 'partials/unsubscribe_form', user: user
-                - else
-                    = render 'partials/subscribe_form', user: user
+        - if !@twitter_following.empty?
+            - @twitter_following.each do |user|
+                .col-xs-6
+                    h2 = user.username
+                    span = user.bio
+                    p
+                        | Subscriptions: 
+                        = rand(200) + 20
+                    p 
+                        | Subscribers: 
+                        = rand(20) + 20
+                    - if current_user.subscriptions.include? user
+                        = render 'partials/unsubscribe_form', user: user
+                    - else
+                        = render 'partials/subscribe_form', user: user
+        - else
+            - @popular_users.each do |user|
+                .col-xs-6
+                    h2 = user.username
+                    span = user.bio
+                    p
+                        | Subscriptions: 
+                        = rand(200) + 20
+                    p 
+                        | Subscribers: 
+                        = rand(20) + 20
+                    - if current_user.subscriptions.include? user
+                        = render 'partials/unsubscribe_form', user: user
+                    - else
+                        = render 'partials/subscribe_form', user: user
 
     = link_to "Next Step", root_path, class: "btn btn-primary btn-large"
