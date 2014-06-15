@@ -9,10 +9,10 @@ div style="text-align: center"
                     span = user.bio
                     p
                         | Subscriptions: 
-                        = rand(200) + 20
+                        = rand(20) + 20
                     p 
                         | Subscribers: 
-                        = rand(20) + 20
+                        = rand(200) + 20
                     - if current_user.subscriptions.include? user
                         = render 'partials/unsubscribe_form', user: user
                     - else
@@ -24,10 +24,10 @@ div style="text-align: center"
                     span = user.bio
                     p
                         | Subscriptions: 
-                        = rand(200) + 20
+                        = rand(20) + 20
                     p 
                         | Subscribers: 
-                        = rand(20) + 20
+                        = rand(200) + 20
                     - if current_user.subscriptions.include? user
                         = render 'partials/unsubscribe_form', user: user
                     - else
