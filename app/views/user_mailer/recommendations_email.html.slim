@@ -54,7 +54,7 @@ p
             /     = form_for @user, :url => {controller: 'users', host: "localhost:3000", action: 'add_article'} do |f|
             /         = hidden_field_tag :user, @user.id
             /         = hidden_field_tag :article, article["resolved_url"]
-            /         = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
+            /         = f.submit "Add to my Pocket", class: "btn btn-lg btn-primary"
 
         - article_count += 1
         hr

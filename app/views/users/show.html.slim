@@ -36,7 +36,7 @@
                             = hidden_field_tag :article, article["resolved_url"]
                             = f.submit "", class: "pocket-button", type: "image", src: image_path("icons/Pocket.svg")
                     - else
-                        = link_to "Pocket +", new_pocket_path, class: "btn btn-large btn-primary", type: "button"
+                        = link_to "Pocket +", new_pocket_path, class: "btn btn-lg btn-primary", type: "button"
             hr
     / @user has not linked pocket
     - else

@@ -19,4 +19,4 @@
                         = form_for current_user, :url => {controller: 'users', action: 'add_article'} do |f|
                             = hidden_field_tag :user, @user.id
                             = hidden_field_tag :article, article["resolved_url"]
-                            = f.submit "Add to my Pocket", class: "btn btn-large btn-primary"
+                            = f.submit "Add to my Pocket", class: "btn btn-lg btn-primary"

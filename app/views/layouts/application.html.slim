@@ -7,13 +7,6 @@ html
         = csrf_meta_tags
  
     body
-        = render "partials/header"
-        - if notice
-            p.notice
-                = notice
-        - if alert
-            p.alert
-                = alert
         - if user_signed_in?
             #layout
                 a href="#menu" id="menuLink" class="menu-link"
@@ -22,9 +15,23 @@ html
                     
                     =render "partials/main_menu"
                     #main
+                        = render "partials/header"
                         .content
+                            - if notice
+                                p.notice
+                                    = notice
+                            - if alert
+                                p.alert
+                                    = alert
                             = yield
         - else
+            = render "partials/header"
+            - if notice
+                p.notice
+                    = notice
+            - if alert
+                p.alert
+                    = alert
             = yield
 
         = debug(params) if Rails.env.development?

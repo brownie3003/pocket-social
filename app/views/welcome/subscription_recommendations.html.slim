@@ -1,6 +1,6 @@
-h3 User Recommendations
-span Click on a few people to subscribe to them.
-.container style="text-align: center"
+div style="text-align: center"
+    h3 User Recommendations
+    span Click on a few people to subscribe to them.
     .row
         - if !@twitter_following.empty?
             - @twitter_following.each do |user|
@@ -33,4 +33,4 @@ span Click on a few people to subscribe to them.
                     - else
                         = render 'partials/subscribe_form', user: user
 
-    = link_to "Next Step", root_path, class: "btn btn-primary btn-large"
+    = link_to "Next Step", root_path, class: "btn btn-primary btn-lg"
