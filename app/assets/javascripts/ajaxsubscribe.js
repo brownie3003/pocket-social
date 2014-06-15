@@ -29,4 +29,8 @@ $(document).ready(function() {
         });
     }
     });  
+
+    $('.nextstep').click(function(e) {
+        $("body").html("Hold on, this takes a fucking while...");
+    });
 });
