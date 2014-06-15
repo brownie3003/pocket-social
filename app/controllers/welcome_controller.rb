@@ -23,6 +23,6 @@ class WelcomeController < ApplicationController
                 @popular_users = [User.find_by(id: 'mattclifford'), User.find_by(id: "nicangeli"), User.find_by(id: "UBC_founder")]
             end
         end
-        #current_user.update_attributes(new_user?: false)
+        current_user.update_attributes(new_user?: false)
     end
 end
