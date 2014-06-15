@@ -63,13 +63,23 @@ class UsersController < ApplicationController
     end
     
     def subscribe
-        current_user.subscribe!(User.find(params[:subscribe_to_user]))
-        redirect_to root_path
+        if !request.xhr?
+            current_user.subscribe!(User.find(params[:subscribe_to_user]))
+            redirect_to root_path
+        else
+            current_user.subscribe!(User.find(params[:subscribe_to_user]))
+            head :no_content
+        end     
     end
     
     def unsubscribe
-        current_user.unsubscribe!(User.find(params[:unsubscribe_to_user]))
-        redirect_to root_path
+        if !request.xhr?
+            current_user.unsubscribe!(User.find(params[:unsubscribe_to_user]))
+            redirect_to root_path
+        else
+            current_user.unsubscribe!(User.find(params[:unsubscribe_to_user]))
+            head :no_content
+        end
     end
     
     def add_article
