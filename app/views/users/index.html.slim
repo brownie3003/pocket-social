@@ -16,10 +16,11 @@ div style="text-align: center;"
                     p 
                         | Subscribers: 
                         = user.subscribers.count
-                    - if current_user.subscriptions.include? user
-                        = render 'partials/unsubscribe_form', user: user
-                    - else
-                        = render 'partials/subscribe_form', user: user
+                    - if user_signed_in?
+                        - if current_user.subscriptions.include? user
+                            = render 'partials/unsubscribe_form', user: user
+                        - else
+                            = render 'partials/subscribe_form', user: user
 
 
 = will_paginate @users 

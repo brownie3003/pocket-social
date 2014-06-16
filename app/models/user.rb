@@ -166,7 +166,7 @@ class User
 
     def clean_up(articles)
         articles.each do |id, article|
-            if (article["resolved_url"].nil? || article["resolved_url"].empty?) || (article["resolved_title"].nil? || article["resolved_title"].empty?) || (article["excerpt"].nil? || article["excerpt"].empty?)
+            if (article["resolved_url"].nil? || article["resolved_url"].empty?) || (article["resolved_title"].nil? || article["resolved_title"].empty?) || (article["excerpt"].nil? || article["excerpt"].empty?) || article["resolved_title"] == "Missing Link"
                 articles.delete(id)
             end
         end
