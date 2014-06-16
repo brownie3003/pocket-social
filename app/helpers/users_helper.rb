@@ -21,14 +21,35 @@ module UsersHelper
             }.to_json
         })["list"]
         
-        # Delete any unresolved articles from hash (or IFTTT articles from Mr. Clifford)
+        puts articles.count
+
+        articles = clean_up(articles)
+
+        puts articles.count    
+        return articles
+    end
+
+    def clean_up(articles)
         articles.each do |id, article|
-            if article["resolved_url"].nil? || article["resolved_title"] == "Missing Link"
+            if (article["resolved_url"].nil? || article["resolved_url"].empty?) || (article["resolved_title"].nil? || article["resolved_title"].empty?) || (article["excerpt"].nil? || article["excerpt"].empty?)
                 articles.delete(id)
             end
         end
+    end
+
+    def article_feed(user)
+        # If the user has a pocket account associated we get their articles
+        if user.pocket
+            user_articles = user_articles(user, 'all')
+        else
+            user_articles = {}
+        end
         
-        return articles
+        subscription_articles = subscription_articles(user)
+        prune_articles(user_articles, subscription_articles)
+
+        # Return this to chain order by popularity
+        return self
     end
 
     # returns a list of the last 2 weeks of articles that subscriptions have added to their pocket
@@ -56,19 +77,6 @@ module UsersHelper
         return subscription_articles
     end
     
-
-    def article_feed(user)
-        # If the user has a pocket account associated we get their articles
-        if user.pocket
-            user_articles = user_articles(user, 'all')
-        else
-            user_articles = {}
-        end
-        subscription_articles = subscription_articles(user)
-        prune_articles(user_articles, subscription_articles)
-    end
-
-
     def prune_articles(user, subscriptions)
         subscriptions.each do |subscription_article_id, subscription_article_hash|
             user.each do |users_article_id, users_article_hash|

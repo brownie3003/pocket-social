@@ -2,7 +2,7 @@ p
     | Dear 
     = @user.id
 
-- if @user.subscriptions.empty? || @user.pocket.nil?
+- if @user.subscriptions.empty?
     p 
         | You don't have subscriptions on Pocket-Social. Pocket-Social works by sourcing recommendations based on what your network is reading.
         | Try subscribing to other users so we can generate recommendations for you.
